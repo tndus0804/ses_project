@@ -21,7 +21,7 @@
 
 | 이름   | 팀 역할 | 역할            | 맡은 페이지                   |                                                                                    깃허브                                                                                    |
 | :----- | :-----: | :-------------- | :---------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| 임종현 |  팀장   | 프론트엔드 개발 | 메인 페이지, 로그인 페이지    |  <a href="https://github.com/hyurima"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub profile" width="20" height="20"></a>  |
+| 임종현 |  팀장   | 프론트엔드 개발 | 메인 페이지, 로그인 페이지    |  <a href="https://github.com/hyurim"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub profile" width="20" height="20"></a>   |
 | 이름2  |  팀원   | 백엔드 개발     | API 개발, 데이터베이스 관리   | <a href="https://github.com/username2"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub profile" width="20" height="20"></a> |
 | 이름3  |  팀원   | 디자이너        | UI/UX 디자인, 프로토타입 제작 | <a href="https://github.com/username3"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub profile" width="20" height="20"></a> |
 
