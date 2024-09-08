@@ -11,11 +11,10 @@
 1. [프로젝트 구조](#프로젝트-구조)
 2. [기술 스택](#기술-스택)
 3. [코딩 규칙](#코딩-규칙)
-4. [환경 변수 설정](#환경-변수-설정)
-5. [데이터베이스 설정](#데이터베이스-설정)
-6. [API 문서](#api-문서)
-7. [테스트](#테스트)
-8. [배포](#배포)
+4. [데이터베이스 설정](#데이터베이스-설정)
+5. [API 문서](#api-문서)
+6. [테스트](#테스트)
+7. [배포](#배포)
 
 ## 프로젝트 구조
 
@@ -46,10 +45,9 @@ src/
 백엔드 모듈에서 사용된 주요 기술 스택을 나열합니다:
 
 - **Spring Boot**: 애플리케이션 프레임워크
-- **Thymeleaf**: 템플릿 엔진
 - **MySQL**: 관계형 데이터베이스
 - **Spring Data JPA**: 데이터베이스 접근 계층
-- **Maven 또는 Gradle**: 빌드 도구
+- **Gradle**: 빌드 도구
 
 ## 코딩 규칙
 
@@ -58,38 +56,20 @@ src/
 - [**구글 스타일 가이드**](https://google.github.io/styleguide/javaguide.html#s1-introduction): 자바 코딩 스타일로 구글 자바 스타일 가이드를 따릅니다.
 - [sql 스타일 가이드](https://www.sqlstyle.guide/ko/): SQL 코딩 스타일로 SQL 스타일 가이드 by Simon Holywell를 따릅니다.
 
-## 환경 변수 설정
+## 데이터베이스 테이블
 
-백엔드 프로젝트에서 필요한 환경 변수를 설정하는 방법을 설명합니다:
-
-1. `application.properties` 파일에서 다음 항목들을 설정합니다:
-
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/yourdatabase
-   spring.datasource.username=yourusername
-   spring.datasource.password=yourpassword
-   spring.jpa.hibernate.ddl-auto=update
-   spring.thymeleaf.cache=false
-   ```
-
-2. 위와 같은 환경 변수를 설정하여 서버가 올바르게 동작하도록 합니다.
-
-## 데이터베이스 설정
-
-백엔드 애플리케이션에서 사용하는 MySQL 데이터베이스 설정 방법을 설명합니다:
+백엔드 애플리케이션에서 사용하는 MySQL 데이터베이스 테이블 목록입니다.
 
 1. **MySQL 데이터베이스 생성**
 
    ```sql
-   CREATE DATABASE yourdatabase;
+   CREATE DATABASE sulomon;
    ```
 
-2. **사용자 생성 및 권한 부여**
+2. **해당 테이블 생성**
 
    ```sql
-   CREATE USER 'yourusername'@'localhost' IDENTIFIED BY 'yourpassword';
-   GRANT ALL PRIVILEGES ON yourdatabase.* TO 'yourusername'@'localhost';
-   FLUSH PRIVILEGES;
+
    ```
 
 3. **데이터베이스 초기화**
