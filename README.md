@@ -1,6 +1,6 @@
 # Sulomon
 
-![Project Logo](./docs/image/image.png)
+![Project Logo](./docs/image/logo.png)
 
 ## 프로젝트 개요
 
@@ -18,8 +18,6 @@
 6. [사용법](#사용법)
 7. [프로젝트 구조](#프로젝트-구조)
 8. [연락처](#연락처)
-
-# ![Project Logo](url-to-your-logo.png)
 
 > ![mainPage](./docs/image/mainPage.png) <br>
 > 설문조사를 만든 사람은 포인트를 정하여 설문조사를 만들 수 있다.
