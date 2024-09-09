@@ -20,7 +20,7 @@
 8. [연락처](#연락처)
 
 > ![mainPage](./docs/image/mainPage.png) <br>
-> 설문조사를 만든 사람은 포인트를 정하여 설문조사를 만들 수 있다.
+> 설문조사를 만든 사람은 포인트를 정하여 설문조사를 만들 수 있다. <br>
 > 설문조사를 참여하는 사람은 참여를 통해 포인트를 얻고 해당 포인트로 기프티콘을 구매할 수 있다.
 
 ## 팀 구성
@@ -81,7 +81,7 @@
 
 ### 기능 요구 사항
 
-[frontEnd](./front/README.md)
+[##frontEnd](./front/README.md) <br>
 [backEnd](./backend/README.md)
 
 ## 기술 스택
