@@ -1,4 +1,4 @@
-package com.sulomon.dsa;
+package com.sulomon.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

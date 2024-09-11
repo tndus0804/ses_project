@@ -1,4 +1,4 @@
-package com.sulomon.dsa.security;
+package com.sulomon.web.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
