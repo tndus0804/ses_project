@@ -1,7 +1,7 @@
 drop database sulomon;
 CREATE database sulomon;
 show databases;
--- use sulomon;
+ use sulomon;
 show tables;
 
 -- 유저 관련 테이븦 (포인트 포함)
