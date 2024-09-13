@@ -1,30 +1,54 @@
 import React from "react";
-import MyPageSidebar from "../../Components/MyPageSidebar";
+import MyPageContainer from "./Components/MyPageContainer";
 import styled from "styled-components";
 
-const PageContainer = styled.div`
+// 비밀번호 인증 섹션 스타일링
+const PasswordSection = styled.div`
   display: flex;
-  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
-const ContentContainer = styled.div`
-  flex: 1;
-  padding: 40px;
+const Input = styled.input`
+  border: 1px solid #f5a623;
+  border-radius: 5px;
+  padding: 10px;
+  width: 300px;
+  margin-top: 20px;
+  font-size: 16px;
 `;
-{
-  /**
-    회원 정보 수정
-    비밀번호 입력하면 개인정보 수정 페이지로 이동
-*/
-}
+
+const Button = styled.button`
+  background-color: #f5a623;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  &:hover {
+    background-color: #e59400;
+  }
+`;
+
+const DashBoard = () => {
+  return (
+    <PasswordSection>
+      <h2>비밀번호 인증</h2>
+      <p>*본인 확인을 위해 비밀번호를 인증하세요</p>
+      <Input type="password" placeholder="비밀번호 입력" />
+      <Button>확인</Button>
+    </PasswordSection>
+  );
+};
+
 const MyPageMain = () => {
   return (
-    <PageContainer>
-      <MyPageSidebar />
-      <ContentContainer>
-        {/* 여기에서 마이페이지의 메인 콘텐츠를 넣을 수 있습니다 */}
-      </ContentContainer>
-    </PageContainer>
+    <MyPageContainer>
+      <DashBoard />
+    </MyPageContainer>
   );
 };
 

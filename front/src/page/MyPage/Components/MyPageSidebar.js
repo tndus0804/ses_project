@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import LIST from "./Constants/menuList";
 
 // Sidebar 전체 스타일 (주황색 배경)
 
@@ -13,6 +14,7 @@ const SidebarContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 20px;
 `;
 
 // 흰색 박스 스타일
@@ -49,35 +51,39 @@ const SidebarItem = styled(NavLink)`
   &.active {
     font-weight: bold;
     border: none; // 구분선 대신 활성화된 링크 강조
+    width: 80%;
+    border-bottom: 1px solid #f5a623; // 구분선 추가
   }
 
   &:hover {
     color: #f5a623; // 호버 시 주황색으로 텍스트 색상 변경
   }
 `;
-
+// title 수정 필요
 const Sidebar = () => {
+  const { title, edit, participation, surveys, point, payment, gifticons } =
+    LIST;
   return (
     <SidebarContainer>
-      <SidebarTitle>마이페이지</SidebarTitle>
+      <SidebarTitle>{title}</SidebarTitle>
       <SidebarBox>
         <SidebarItem to="/editProfile" activeClassName="active">
-          회원정보 수정
+          {edit}
         </SidebarItem>
         <SidebarItem to="/participation" activeClassName="active">
-          참여한 설문조사
+          {participation}
         </SidebarItem>
         <SidebarItem to="/mySurveys" activeClassName="active">
-          내가 만든 설문조사
+          {surveys}
         </SidebarItem>
         <SidebarItem to="/pointHistory" activeClassName="active">
-          포인트 내역
+          {point}
         </SidebarItem>
         <SidebarItem to="/paymentHistory" activeClassName="active">
-          결제 내역
+          {payment}
         </SidebarItem>
         <SidebarItem to="/gifticons" activeClassName="active">
-          기프티콘 구매
+          {gifticons}
         </SidebarItem>
       </SidebarBox>
     </SidebarContainer>
