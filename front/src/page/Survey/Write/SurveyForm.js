@@ -1,7 +1,7 @@
 import React from "react";
 
-const MyPageMenu = () => {
+const SurveyForm = () => {
   return <div></div>;
 };
 
-export default MyPageMenu;
+export default SurveyForm;
