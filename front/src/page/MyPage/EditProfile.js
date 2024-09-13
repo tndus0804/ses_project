@@ -1,25 +1,15 @@
 import React from "react";
-import MyPageSidebar from "./Components/MyPageSidebar";
+import MyPageContainer from "./Components/MyPageContainer";
 import styled from "styled-components";
 
-const PageContainer = styled.div`
-  display: flex;
-  height: 100vh;
-`;
-
-const ContentContainer = styled.div`
-  flex: 1;
-  padding: 40px;
-`;
+const DashBoard = () => {
+  return <div></div>;
+};
 const EditProfile = () => {
   return (
-    <PageContainer>
-      <MyPageSidebar />
-      <ContentContainer>
-        {/* 여기에서 수정 폼의 메인 콘텐츠 */}
-      </ContentContainer>
-    </PageContainer>
+    <MyPageContainer>
+      <DashBoard />
+    </MyPageContainer>
   );
 };
-
 export default EditProfile;

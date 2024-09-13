@@ -53,6 +53,13 @@ const SidebarItem = styled(NavLink)`
     border: none; // 구분선 대신 활성화된 링크 강조
     width: 80%;
     border-bottom: 1px solid #f5a623; // 구분선 추가
+
+    &:after {
+      content: "▶";
+      font-size: 15px;
+      color: #000000; // 주황색 화살표
+      margin-left: 10px; // 화살표와 텍스트 간격
+    }
   }
 
   &:hover {
@@ -67,7 +74,7 @@ const Sidebar = () => {
     <SidebarContainer>
       <SidebarTitle>{title}</SidebarTitle>
       <SidebarBox>
-        <SidebarItem to="/editProfile" activeClassName="active">
+        <SidebarItem to="/mypageMain" activeClassName="active">
           {edit}
         </SidebarItem>
         <SidebarItem to="/participation" activeClassName="active">
