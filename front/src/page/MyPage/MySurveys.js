@@ -1,7 +1,7 @@
 import React from "react";
 
-const MyPageMenu = () => {
+const MySurveys = () => {
   return <div></div>;
 };
 
-export default MyPageMenu;
+export default MySurveys;
