@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import MainPage from "./Page/MainPage";
-import NoticeList from "./Page/Notice/noticeList";
+import NoticeList from "./Page/Notice/NoticeList";
 import SurveySelect from "./Page/Survey/Write/SurveySelect";
 import SurveyPostList from "./Page/Survey/Read/SurveyPostList";
-import Login from "./Page/User/login";
-import SignUp from "./Page/User/Signup";
+import Login from "./Page/user/Login";
+import SignUp from "./Page/user/Signup";
 import MyPageMain from "./Page/MyPage/MyPageMain";
 import EditProfile from "./Page/MyPage/EditProfile";
 import Participation from "./Page/MyPage/Participation";
@@ -19,12 +19,12 @@ import Header from "./Components/Header";
 const App = () => {
   return (
     <Router>
-    <Header />
+      <Header />
       <GlobalFontStyle />
       <div>
         <nav>
           <ul>
-            <li>
+            {/* <li>
               <Link to="/">Home</Link>
             </li>
             <li>
@@ -32,11 +32,11 @@ const App = () => {
             </li>
             <li>
               <Link to="/signUp">회원 가입</Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/mypageMain">마이 페이지</Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/notice">공지사항</Link>
             </li>
             <li>
@@ -44,6 +44,9 @@ const App = () => {
             </li>
             <li>
               <Link to="/surveyList">설문 게시판</Link>
+            </li> */}
+            <li>
+              <Link to="/editProfile">회원정보 수정</Link>
             </li>
           </ul>
         </nav>

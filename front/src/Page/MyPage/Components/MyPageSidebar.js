@@ -14,7 +14,7 @@ const SidebarContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  margin-bottom: 300px;
 `;
 
 // 흰색 박스 스타일
@@ -22,7 +22,7 @@ const SidebarBox = styled.div`
   background-color: white;
   border-radius: 10px;
   padding: 20px;
-  width: 93%;
+  width: 95%;
   display: flex;
   flex-direction: column;
   align-items: center;
