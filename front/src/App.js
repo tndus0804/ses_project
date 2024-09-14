@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import MainPage from "./Page/MainPage";
-import NoticeList from "./Page/Notice/NoticeList";
+import NoticeList from "./Page/Notice/noticeList";
 import SurveySelect from "./Page/Survey/Write/SurveySelect";
 import SurveyPostList from "./Page/Survey/Read/SurveyPostList";
-import Login from "./Page/User/Login";
+import Login from "./Page/User/login";
 import SignUp from "./Page/User/Signup";
 import MyPageMain from "./Page/MyPage/MyPageMain";
 import EditProfile from "./Page/MyPage/EditProfile";
@@ -14,10 +14,12 @@ import PointHistory from "./Page/MyPage/PointHistory";
 import PaymentHistory from "./Page/MyPage/PaymentHistory";
 import Gifticons from "./Page/Pay/Gifticon";
 import GlobalFontStyle from "./Components/GlobalFontStyle";
+import Header from "./Components/Header";
 
 const App = () => {
   return (
     <Router>
+    <Header />
       <GlobalFontStyle />
       <div>
         <nav>

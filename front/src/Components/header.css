@@ -1,0 +1,88 @@
+/* Reset some default styles */
+body, h1, p, ul, li, a {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic styling */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Header styling */
+header {
+    background-color: #FFF4E9;
+    color: #000000;
+    
+    padding: 0.5rem 1rem;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo img {
+    height: 80px; /* 로고 이미지 높이 조정 */
+}
+
+.main-nav {
+    flex: 1;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.main-nav ul li {
+    margin: 0 1rem;
+}
+
+.main-nav ul li a {
+    color: #000000;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: block;
+}
+
+
+
+/* 첫 번째 구분 기호 (두 번째 li 요소) */
+.main-nav ul li:nth-child(2) {
+    position: relative; /* 위치 조정을 위해 relative 설정 */
+    transform: translateY(2px); /* 원하는 만큼 아래로 이동 */
+    color: #000000; /* 구분 기호 색상 */
+    font-size: 18px; /* 구분 기호 크기 조정 */
+}
+
+/* 두 번째 구분 기호 (네 번째 li 요소) */
+.main-nav ul li:nth-child(4) {
+    position: relative; /* 위치 조정을 위해 relative 설정 */
+    transform: translateY(2px); /* 원하는 만큼 아래로 이동 */
+    color: #000000; /* 구분 기호 색상 */
+    font-size: 18px; /* 구분 기호 크기 조정 */
+}
+
+
+
+.auth-links {
+    display: flex;
+}
+
+.auth-links .btn {
+    color: #000000;
+
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-left: 0.5rem;
+}
+
