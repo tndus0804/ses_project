@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-const Login = () => {
+const SurveyResult = () => {
   return <div></div>;
 };
 
-export default Login;
+export default SurveyResult;
