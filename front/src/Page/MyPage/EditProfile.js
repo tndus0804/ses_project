@@ -5,16 +5,17 @@ import styled from "styled-components";
 // 제목(fix)
 const Title = styled.h2`
   border-bottom: 1px solid #f5a623;
+  width: 1100px;
   padding-bottom: 15px;
+  display: inline-block;
 `;
 
 const FormContainer = styled.form`
-  display: flex;
+  display: -webkit-inline-flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  padding: 20px;
+  width: 1100px;
 `;
 
 // 레이블과 입력 필드를 나란히 배치할 컨테이너
@@ -44,10 +45,12 @@ const Input = styled.input`
   border: 1px solid #ddd;
   border-radius: 20px;
   font-size: 16px;
+  background-color: #fff4e9;
 `;
 const AddressInput = styled.input`
   flex-grow: 1;
   width: 48%;
+  background-color: #fff4e9;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 20px;
@@ -103,13 +106,20 @@ const PhoneInput = styled.input`
   cursor: not-allowed; // 커서 금지
 `;
 
-// 버튼 컨테이너
+// 변경 취소 버튼 컨테이너
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-bottom: 20px;
   width: 100%;
   max-width: 800px; // 버튼도 컨테이너 크기 내에서 고정
+  & > button {
+    margin-right: 100px; /* 버튼 사이에 간격 추가 */
+  }
+
+  & > button:last-child {
+    margin-right: 0; /* 마지막 버튼에는 margin-right 제거 */
+  }
 `;
 
 // 본인인증 및 주소 검색 버튼
@@ -130,11 +140,12 @@ const AuthButton = styled.button`
 // 버튼 스타일
 const Button = styled.button`
   background-color: #ff9630;
+  height: 30px;
+  width: 85px;
   border: none;
-  padding: 10px 20px;
   margin: 10px;
   color: white;
-  border-radius: 5px;
+  border-radius: 20px;
   font-size: 16px;
   cursor: pointer;
 
@@ -143,8 +154,22 @@ const Button = styled.button`
   }
 `;
 
+// 회원 탈퇴 버튼 컨테이너
+const DeleteContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 1100px;
+  border-top: 1px solid #f5a623;
+`;
+
+// 회원 탈퇴 버튼
 const WithdrawButton = styled(Button)`
-  background-color: #ff4b4b;
+  margin-top: 30px;
+  border-radius: 20px;
+  background-color: #7d7d7d;
+  width: 300px;
+  height: 40px;
+  font-size: 25px;
 
   &:hover {
     background-color: #e43a3a;
@@ -286,9 +311,9 @@ const DashBoard = ({ formData, handleChange, handleSubmit }) => {
         </ButtonContainer>
 
         {/* 회원 탈퇴 버튼 */}
-        <ButtonContainer>
+        <DeleteContainer>
           <WithdrawButton>회원 탈퇴</WithdrawButton>
-        </ButtonContainer>
+        </DeleteContainer>
       </FormContainer>
     </>
   );

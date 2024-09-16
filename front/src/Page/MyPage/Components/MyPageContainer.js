@@ -19,7 +19,8 @@ const ContentContainer = styled.div`
   border-radius: 15px;
   width: 60%;
   max-width: 1230px;
-  // max-height: 690px;
+  min-height: 1000px;
+  max-height: 1000px;
   // 추후 회의 후 수정 예정
   text-align: center; // 중앙 정렬
   margin-top: 20px; // 콘텐츠가 사이드바 아래에 위치하게 하는 여백
