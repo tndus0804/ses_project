@@ -5,7 +5,7 @@ import styled from "styled-components";
 // 제목(fix)
 const Title = styled.h2`
   width: 1100px;
-  padding-bottom: 15px;
+  // padding-bottom: 15px;
   display: -webkit-inline-box;
   font-weight: lighter;
 `;
