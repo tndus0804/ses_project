@@ -7,7 +7,7 @@ import LIST from "./Constants/menuList";
 
 const SidebarContainer = styled.div`
   width: 250px;
-  height: 550px;
+  height: 560px;
   background-color: #f5a623; // 주황색 배경
   padding: 20px;
   border-radius: 15px;
@@ -45,11 +45,12 @@ const SidebarItem = styled(NavLink)`
   margin: 10px 0;
   text-align: center;
   font-size: 18px;
+
   width: 80%;
   border-bottom: 1px solid #f5a623; // 구분선 추가
 
   &.active {
-    font-weight: bold;
+    font-weight: lighter;
     border: none; // 구분선 대신 활성화된 링크 강조
     width: 80%;
     border-bottom: 1px solid #f5a623; // 구분선 추가
