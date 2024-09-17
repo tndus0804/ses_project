@@ -8,10 +8,18 @@ const Title = styled.h2`
   display: -webkit-inline-box;
   font-weight: lighter;
 `;
+
+const Container = styled.div`
+  width: 100%;
+  max-width: 1100px;
+`;
+
 // 테이블 스타일
 const Table = styled.table`
   border-top: 2px solid #f5a623;
-  width: 1100px;
+  width: 1000px; // 크기 조정 필요
+
+  max-width: 1100px;
   border-collapse: collapse;
   margin-bottom: 20px;
   display: inline-table;
@@ -130,7 +138,7 @@ const DashBoard = () => {
     },
   ];
   return (
-    <div>
+    <Container>
       <Title>내가 만든 설문조사</Title>
       <Table>
         <thead>
@@ -167,7 +175,7 @@ const DashBoard = () => {
         <PageNumber>5</PageNumber>
         <PageNumber>▶</PageNumber>
       </Pagination>
-    </div>
+    </Container>
   );
 };
 
