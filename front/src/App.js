@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import MainPage from "./Page/MainPage";
 import NoticeList from "./Page/Notice/NoticeList";
+import NoticeWrite from "./Page/Notice/NoticeWrite";
 import Login from "./Page/User/Login";
 import SignUp from "./Page/User/Signup";
 import MyPageMain from "./Page/MyPage/MyPageMain";
@@ -13,6 +14,8 @@ import PaymentHistory from "./Page/MyPage/PaymentHistory";
 import Gifticons from "./Page/Pay/Gifticon";
 import GlobalFontStyle from "./Components/GlobalFontStyle";
 import Header from "./Components/Header";
+import FindID from "./Page/User/FindID";
+import FindPassword from "./Page/User/FindPassword";
 
 // 설문조사
 import SurveyForm from "./Page/Survey/Write/SurveyForm";
@@ -21,10 +24,15 @@ import SurveySelect from "./Page/Survey/Write/SurveySelect";
 import SurveyPostWrite from "./Page/Survey/Write/SurveyPostWrite";
 import SurveyParticipation from "./Page/Survey/Read/SurveyParticipation";
 import SurveyPostList from "./Page/Survey/Read/SurveyPostList";
-import SurveyPreview from "./Page/Survey/components/SurveyPreview";
 
+// import AdminSidebar from './Page/Admin/Components/AdminSidebar';
+import AdminUser from "./Page/Admin/AdminUser";
+import AdminSurvey from "./Page/Admin/AdminSurvey";
+import AdminPost from "./Page/Admin/AdminPost";
 
 const App = () => {
+  const [isAdmin, setIsAdmin] = useState(true);
+
   return (
     <Router>
       <Header />
@@ -64,6 +72,8 @@ const App = () => {
           {/* 회원가입 / 로그인 */}
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
+          <Route path="/FindID" element={<FindID />} />
+          <Route path="/FindPassword" element={<FindPassword />} />
           {/* 마이페이지 */}
           <Route path="/mypageMain" element={<MyPageMain />} />
           <Route path="/editProfile" element={<EditProfile />} />
@@ -74,17 +84,25 @@ const App = () => {
           <Route path="/gifticons" element={<Gifticons />} />
           <Route path="/surveySelect" element={<SurveySelect />} />
           {/* 공지사항 */}
-          <Route path="/notice" element={<NoticeList />} />
+          <Route path="/NoticeList" element={<NoticeList />} />
+          <Route
+            path="/NoticeWrite"
+            element={<NoticeWrite isAdmin={isAdmin} />}
+          />
 
           <Route path="/surveyPostList" element={<SurveyPostList />} />
           <Route path="/surveyForm" element={<SurveyForm />} />
           <Route path="/surveyDetail" element={<SurveyDetail />} />
           <Route path="/surveySelect" element={<SurveySelect />} />
           <Route path="/surveyPostWrite" element={<SurveyPostWrite />} />
-          <Route path="/surveyParticipation" element={<SurveyParticipation />} />
-          <Route path="/surveyPostList" element={<SurveyPostList />} />
-          <Route path="/surveyPreview" element={<SurveyPreview />} />
-
+          <Route
+            path="/surveyParticipation"
+            element={<SurveyParticipation />}
+          />
+          {/* 관리자 */}
+          <Route path="/adminUser" element={<AdminUser />} />
+          <Route path="/adminSurvey" element={<AdminSurvey />} />
+          <Route path="/adminPost" element={<AdminPost />} />
         </Routes>
       </div>
     </Router>

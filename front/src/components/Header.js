@@ -7,15 +7,15 @@ return (
     <div className="header-container">
         {/* 로고 이미지 */}
         <div className="logo">
-        <a href="index.html">
-            <img src="public/logo111.png" alt="Logo" />
+        <a href="/">
+            <img src="/logo111.png" alt="Logo" />
         </a>
         </div>
 
         {/* 중앙 메뉴 */}
         <nav className="main-nav">
         <ul>
-            <li><a href="notices.html">공지사항</a></li>
+            <li><a href="/NoticeList">공지사항</a></li>
             <li>|</li>
             <li><a href="survey-create.html">설문조사 작성</a></li>
             <li>|</li>
@@ -25,8 +25,8 @@ return (
 
         {/* 로그인 및 회원가입 */}
         <div className="auth-links">
-        <a href="login.html" className="btn">로그인</a>
-        <a href="signup.html" className="btn">회원가입</a>
+        <a href="login" className="btn">로그인</a>
+        <a href="signup" className="btn">회원가입</a>
         </div>
     </div>
     </header>
