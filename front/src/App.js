@@ -2,8 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import MainPage from "./Page/MainPage";
 import NoticeList from "./Page/Notice/NoticeList";
-import SurveySelect from "./Page/Survey/Write/SurveySelect";
-import SurveyPostList from "./Page/Survey/Read/SurveyPostList";
 import Login from "./Page/User/Login";
 import SignUp from "./Page/User/Signup";
 import MyPageMain from "./Page/MyPage/MyPageMain";
@@ -15,6 +13,16 @@ import PaymentHistory from "./Page/MyPage/PaymentHistory";
 import Gifticons from "./Page/Pay/Gifticon";
 import GlobalFontStyle from "./Components/GlobalFontStyle";
 import Header from "./Components/Header";
+
+// 설문조사
+import SurveyForm from "./Page/Survey/Write/SurveyForm";
+import SurveyDetail from "./Page/Survey/Read/SurveyDetail";
+import SurveySelect from "./Page/Survey/Write/SurveySelect";
+import SurveyPostWrite from "./Page/Survey/Write/SurveyPostWrite";
+import SurveyParticipation from "./Page/Survey/Read/SurveyParticipation";
+import SurveyPostList from "./Page/Survey/Read/SurveyPostList";
+import SurveyPreview from "./Page/Survey/components/SurveyPreview";
+
 
 const App = () => {
   return (
@@ -69,6 +77,14 @@ const App = () => {
           <Route path="/notice" element={<NoticeList />} />
 
           <Route path="/surveyPostList" element={<SurveyPostList />} />
+          <Route path="/surveyForm" element={<SurveyForm />} />
+          <Route path="/surveyDetail" element={<SurveyDetail />} />
+          <Route path="/surveySelect" element={<SurveySelect />} />
+          <Route path="/surveyPostWrite" element={<SurveyPostWrite />} />
+          <Route path="/surveyParticipation" element={<SurveyParticipation />} />
+          <Route path="/surveyPostList" element={<SurveyPostList />} />
+          <Route path="/surveyPreview" element={<SurveyPreview />} />
+
         </Routes>
       </div>
     </Router>
