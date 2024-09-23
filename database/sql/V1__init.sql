@@ -4,6 +4,7 @@ show databases;
  use sulomon;
 show tables;
 
+
 -- 유저 관련 테이븦 (포인트 포함)
 CREATE TABLE users (
     user_num INT AUTO_INCREMENT PRIMARY KEY,    -- 사용자 고유 번호
