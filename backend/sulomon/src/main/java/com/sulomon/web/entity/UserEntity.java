@@ -29,7 +29,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT를 JPA에서 지원하는 방식
     @Column(name = "user_num")
-    String userNum;
+    int userNum;
 
     // 아이디
     @Column(name = "user_id", length = 20, nullable = false, unique = true)

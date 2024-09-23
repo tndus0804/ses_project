@@ -30,7 +30,7 @@ public class SurveysEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "survey_id")
-    String surveyId;
+    int surveyId;
 
     // 설문조사 작성자 (users 테이블과 연관)
     @ManyToOne(fetch = FetchType.LAZY)

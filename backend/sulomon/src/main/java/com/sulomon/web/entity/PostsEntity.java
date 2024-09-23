@@ -1,4 +1,4 @@
 package com.sulomon.web.entity;
 
-public class PostEntity {
+public class PostsEntity {
 }

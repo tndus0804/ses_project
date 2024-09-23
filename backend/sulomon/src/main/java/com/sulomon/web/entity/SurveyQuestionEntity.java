@@ -27,24 +27,24 @@ public class SurveyQuestionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")
-    String questionId;
+    int questionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "survey_id", nullable = false)
     SurveysEntity surveys;
 
     @Column(name = "question_text", nullable = false, columnDefinition = "TEXT")
-    private String questionText;
+    String questionText;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "question_type", nullable = false)
-    private QuestionType questionType;
+    QuestionType questionType;
 
     @Column(name = "options", columnDefinition = "JSON")
-    private String options;
+    String options;
 
     // 질문 유형에 대한 Enum
-    public enum QuestionType {
+    enum QuestionType {
         MULTIPLE_CHOICE,
         TEXT,
         RATING
