@@ -44,22 +44,22 @@ const TextOverlayBottom = styled.div`
 `;
 
 const HeadingTop = styled.h1`
-  font-family: 'Pretendard-Regular', serif;
-  font-weight: 100; 
+  font-family: "Pretendard-Regular", serif;
+  font-weight: 100;
   margin: 0;
   font-size: 7rem;
-  
+
   @media (max-width: 768px) {
     font-size: 2rem;
   }
 `;
 
 const HeadingBottom = styled.h1`
-  font-family: 'Pretendard-Regular', serif;
+  font-family: "Pretendard-Regular", serif;
   font-weight: 400;
   margin: 0;
   font-size: 7rem;
-  
+
   @media (max-width: 768px) {
     font-size: 2rem;
   }
@@ -86,9 +86,9 @@ const ContentSection = styled.div`
 `;
 
 const Paragraph = styled.p`
-  font-family: 'GowunBatang-Regular', serif;
+  font-family: "GowunBatang-Regular", serif;
   font-size: 1.3rem;
-  color: #7A6C6C;
+  color: #7a6c6c;
   margin: 0;
 `;
 
@@ -141,7 +141,7 @@ const MainPage = () => {
     { id: 1, title: "새로운 설문 디자인 항목들을 추가", date: "2024-10-15" },
     { id: 2, title: "2024.10.10 서비스 점검 완료", date: "2024-10-10" },
     { id: 3, title: "설문조사 끝낸 이후 약관 변경사항", date: "2024-09-30" },
-    { id: 4, title: "회원가입 혜택 변경 안내", date: "2024-09-25" }
+    { id: 4, title: "회원가입 혜택 변경 안내", date: "2024-09-25" },
   ]);
 
   const sortedNotices = notices
@@ -163,13 +163,15 @@ const MainPage = () => {
       <ContentContainer>
         <ContentSection>
           <Paragraph>
-            설문 작성 및 참여로 소중한 의견을 공유하세요.<br />
+            설문 작성 및 참여로 소중한 의견을 공유하세요.
+            <br />
             쉽게 참여하고 간편하게 결과를 볼 수 있습니다.
           </Paragraph>
         </ContentSection>
         <ContentSection>
           <Paragraph>
-            설문에 참여하면 포인트를 적립하고<br />
+            설문에 참여하면 포인트를 적립하고
+            <br />
             포인트로 기프티콘을 받을 수 있습니다.
           </Paragraph>
         </ContentSection>
