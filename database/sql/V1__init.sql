@@ -8,7 +8,7 @@ show tables;
 CREATE TABLE users (
     user_num INT AUTO_INCREMENT PRIMARY KEY,    -- 사용자 고유 번호
     user_id VARCHAR(20) UNIQUE NOT NULL,        -- 로그인에 사용되는 유저 아이디
-    password VARCHAR(255) NOT NULL,             -- 해시화된 비밀번호
+    password VARCHAR(255),             -- 해시화된 비밀번호
     email VARCHAR(100) UNIQUE NOT NULL,         -- 사용자 이메일 주소 (고유)
     CHECK (email REGEXP '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$'),  -- 이메일 형식 검사
     name VARCHAR(100) NOT NULL,                 -- 사용자 실명
