@@ -72,8 +72,6 @@ public class SurveysEntity {
         this.updatedAt = LocalDateTime.now(); // 수정할 때마다 현재 시간으로 갱신
     }
 
-    // Getters, Setters, Constructors
-
     public enum FormType {
         GOOGLE_FORM, SITE_FORM
     }

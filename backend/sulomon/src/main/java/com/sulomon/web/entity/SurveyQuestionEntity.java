@@ -49,18 +49,5 @@ public class SurveyQuestionEntity {
         TEXT,
         RATING
     }
-    /*
-
-
-    -- 설문조사 질문 테이블
-CREATE TABLE survey_questions (
-    question_id INT AUTO_INCREMENT PRIMARY KEY, -- 질문 고유 ID
-    survey_id INT NOT NULL,                    -- 설문조사 ID (surveys 테이블과 연결)
-    question_text TEXT NOT NULL,               -- 질문 내용
-    question_type ENUM('multiple_choice', 'text', 'rating') NOT NULL, -- 질문 유형 ('multiple_choice': 객관식, 'text': 서술형, 'rating': 평점)
-    options JSON,                              -- 선택지 (객관식 질문일 경우 JSON 형식으로 저장)
-    FOREIGN KEY (survey_id) REFERENCES surveys(survey_id) -- surveys 테이블의 survey_id를 참조하는 외래 키
-);
-     */
 
 }
