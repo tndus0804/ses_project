@@ -1,4 +1,50 @@
 package com.sulomon.web.entity;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "notices")
 public class NoticeEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "notice_id")
+    int noticeId;
+
+    @ManyToOne
+    @JoinColumn(name = "admin_num", nullable = false)
+    UserEntity adminNum; // 관리자와 연관된 User 엔티티
+
+    @Column(name = "title", nullable = false, length = 255)
+    String title;
+
+    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
+    String content;
+
+    @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    LocalDateTime updatedAt = LocalDateTime.now();
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now(); // 처음 저장할 때 시간 설정
+        this.updatedAt = LocalDateTime.now(); // 처음 저장할 때 수정 시간도 동일하게 설정
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now(); // 업데이트할 때마다 수정 시간을 현재로 갱신
+    }
 }

@@ -1,20 +1,14 @@
 package com.sulomon.web.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder
@@ -62,6 +56,14 @@ public class PostsEntity {
 
     @Column(name = "status", nullable = false, columnDefinition = "ENUM('active', 'deleted') DEFAULT 'active'")
     String status = "active";
+
+    @ManyToMany
+    @JoinTable(
+            name = "post_interests", // 연결 테이블 이름
+            joinColumns = @JoinColumn(name = "post_id"), // 연결 테이블의 post_id
+            inverseJoinColumns = @JoinColumn(name = "interest_id") // 연결 테이블의 interest_id
+    )
+    private Set<InterestEntity> interests = new HashSet<>();
 
     @PreUpdate
     public void preUpdate() {
