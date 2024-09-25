@@ -25,19 +25,22 @@ import java.util.Set;
 @Table(name = "interests")
 public class InterestEntity {
 
+    // 관심사 ID (AUTO_INCREMENT, PRIMARY KEY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "interest_id")
-    int interestId;
+    private Integer interestId;
 
+    // 관심사 이름 (VARCHAR 100, UNIQUE, NOT NULL)
     @Column(name = "interest_name", length = 100, unique = true, nullable = false)
-    String interestName;
+    private String interestName;
 
+    // 게시물과의 다대다 관계를 정의 (post_interest 테이블을 통해 매핑)
     @ManyToMany
     @JoinTable(
-            name = "post_interest",
-            joinColumns = @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn(name = "interest_id")
+            name = "post_interest", // 연결 테이블 이름
+            joinColumns = @JoinColumn(name = "post_id"), // 현재 엔티티의 외래 키 (post_id)
+            inverseJoinColumns = @JoinColumn(name = "interest_id") // 반대 엔티티의 외래 키 (interest_id)
     )
     private Set<InterestEntity> interests = new HashSet<>();
 }

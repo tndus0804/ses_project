@@ -2,7 +2,7 @@
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_xMLvQHAyEe-EQK7BYgCqyw" elementId="org.eclipse.e4.legacy.ide.application" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_xMLvQXAyEe-EQK7BYgCqyw" bindingContexts="_xMM-3HAyEe-EQK7BYgCqyw">
   <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;workbench>&#xA;&lt;mruList>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.ui.DefaultTextEditor&quot; name=&quot;build.gradle.kts&quot; tooltip=&quot;demo-test/build.gradle.kts&quot;>&#xA;&lt;persistable path=&quot;/demo-test/build.gradle.kts&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;SpringBootPropertyEditor&quot; name=&quot;application.properties&quot; tooltip=&quot;sulomon/src/main/resources/application.properties&quot;>&#xA;&lt;persistable path=&quot;/sulomon/src/main/resources/application.properties&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SecurityConfig.java&quot; tooltip=&quot;sulomon/src/main/java/com/sulomon/web/security/SecurityConfig.java&quot;>&#xA;&lt;persistable path=&quot;/sulomon/src/main/java/com/sulomon/web/security/SecurityConfig.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SulomonApplicationTests.java&quot; tooltip=&quot;sulomon/src/test/java/com/sulomon/web/SulomonApplicationTests.java&quot;>&#xA;&lt;persistable path=&quot;/sulomon/src/test/java/com/sulomon/web/SulomonApplicationTests.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SulomonApplication.java&quot; tooltip=&quot;sulomon/src/main/java/com/sulomon/web/SulomonApplication.java&quot;>&#xA;&lt;persistable path=&quot;/sulomon/src/main/java/com/sulomon/web/SulomonApplication.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;TestController.java&quot; tooltip=&quot;sulomon/src/main/java/com/sulomon/web/controller/TestController.java&quot;>&#xA;&lt;persistable path=&quot;/sulomon/src/main/java/com/sulomon/web/controller/TestController.java&quot;/>&#xA;&lt;/file>&#xA;&lt;/mruList>&#xA;&lt;/workbench>"/>
   <tags>activeSchemeId:org.eclipse.ui.defaultAcceleratorConfiguration</tags>
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_xMLvQXAyEe-EQK7BYgCqyw" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_xMLvQnAyEe-EQK7BYgCqyw" label="%trimmedwindow.label.eclipseSDK" x="0" y="94" width="1680" height="1025">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_xMLvQXAyEe-EQK7BYgCqyw" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_xMLvQnAyEe-EQK7BYgCqyw" label="%trimmedwindow.label.eclipseSDK" x="0" y="94" width="1680" height="1050">
     <persistedState key="coolBarVisible" value="true"/>
     <persistedState key="perspectiveBarVisible" value="true"/>
     <persistedState key="isRestored" value="true"/>
@@ -10,7 +10,6 @@
     <persistedState key="workingSets" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;workingSets/>"/>
     <persistedState key="aggregateWorkingSetId" value="Aggregate for window 1726043995000"/>
     <tags>topLevel</tags>
-    <tags>shellMaximized</tags>
     <children xsi:type="basic:PartSashContainer" xmi:id="_xMLvQnAyEe-EQK7BYgCqyw" selectedElement="_xMLvQ3AyEe-EQK7BYgCqyw" horizontal="true">
       <children xsi:type="advanced:PerspectiveStack" xmi:id="_xMLvQ3AyEe-EQK7BYgCqyw" elementId="org.eclipse.ui.ide.perspectivestack" containerData="7500" selectedElement="_xMLvRHAyEe-EQK7BYgCqyw">
         <children xsi:type="advanced:Perspective" xmi:id="_xMLvRHAyEe-EQK7BYgCqyw" elementId="org.eclipse.jdt.ui.JavaPerspective" selectedElement="_xMLvRXAyEe-EQK7BYgCqyw" label="Java" iconURI="platform:/plugin/org.eclipse.jdt.ui/$nl$/icons/full/eview16/jperspective.png">
@@ -235,7 +234,7 @@
           <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
         </children>
         <children xsi:type="basic:Part" xmi:id="_PrVKQHQNEe-tnsfmmo0mqQ" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="application.properties" iconURI="platform:/plugin/org.springframework.tooling.boot.ls/icons/spring_obj.gif" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;SpringBootPropertyEditor&quot; name=&quot;application.properties&quot; partName=&quot;application.properties&quot; title=&quot;application.properties&quot; tooltip=&quot;sulomon/src/main/resources/application.properties&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/sulomon/src/main/resources/application.properties&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;75&quot; selectionTopPixel=&quot;20&quot;/>&#xA;&lt;/editor>"/>
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;SpringBootPropertyEditor&quot; name=&quot;application.properties&quot; partName=&quot;application.properties&quot; title=&quot;application.properties&quot; tooltip=&quot;sulomon/src/main/resources/application.properties&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/sulomon/src/main/resources/application.properties&quot;/>&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>removeOnHide</tags>
           <tags>SpringBootPropertyEditor</tags>
@@ -425,7 +424,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_xMMYMXAyEe-EQK7BYgCqyw" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_ipqj0HTOEe-mVr026KhHQA" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_xMPbGHAyEe-EQK7BYgCqyw"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_ZzYcUHs0Ee-fCeGipyfXFA" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_xMPbGHAyEe-EQK7BYgCqyw"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_xMMYPnAyEe-EQK7BYgCqyw" elementId="group.edit" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -433,8 +432,8 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_xMMYQHAyEe-EQK7BYgCqyw" elementId="org.eclipse.ui.workbench.edit">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_iprK4XTOEe-mVr026KhHQA" elementId="undo" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/undo_edit.png" tooltip="Undo" enabled="false" command="_xMOzAXAyEe-EQK7BYgCqyw"/>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_iprx8HTOEe-mVr026KhHQA" elementId="redo" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/redo_edit.png" tooltip="Redo" enabled="false" command="_xMPZvHAyEe-EQK7BYgCqyw"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_ZzZqcHs0Ee-fCeGipyfXFA" elementId="undo" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/undo_edit.png" tooltip="Undo" enabled="false" command="_xMOzAXAyEe-EQK7BYgCqyw"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_ZzZqcXs0Ee-fCeGipyfXFA" elementId="redo" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/redo_edit.png" tooltip="Redo" enabled="false" command="_xMPZvHAyEe-EQK7BYgCqyw"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_xMMYRHAyEe-EQK7BYgCqyw" elementId="additions" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -458,7 +457,10 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_xMMYcnAyEe-EQK7BYgCqyw" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_iprx9nTOEe-mVr026KhHQA" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_xMPayHAyEe-EQK7BYgCqyw"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_ZzaRgHs0Ee-fCeGipyfXFA" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_xMPayHAyEe-EQK7BYgCqyw"/>
+      </children>
+      <children xsi:type="menu:ToolBar" xmi:id="_Z9DVsHs0Ee-fCeGipyfXFA" elementId="SpringBootPropertyEditor" visible="false">
+        <tags>Draggable</tags>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_xMMYfnAyEe-EQK7BYgCqyw" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -1167,7 +1169,7 @@
   <bindingTables xmi:id="_xMM-2HAyEe-EQK7BYgCqyw" bindingContext="_xMM_NXAyEe-EQK7BYgCqyw"/>
   <bindingTables xmi:id="_xMM-2XAyEe-EQK7BYgCqyw" bindingContext="_xMM_NnAyEe-EQK7BYgCqyw"/>
   <bindingTables xmi:id="_xMM-2nAyEe-EQK7BYgCqyw" contributorURI="platform:/fragment/org.eclipse.e4.ui.workbench.renderers.swt.cocoa" bindingContext="_xMM_DXAyEe-EQK7BYgCqyw">
-    <bindings xmi:id="_ihLWMXTOEe-mVr026KhHQA" keySequence="M1+W" command="_xMQA5HAyEe-EQK7BYgCqyw">
+    <bindings xmi:id="_ZqUm8Xs0Ee-fCeGipyfXFA" keySequence="M1+W" command="_xMQA5HAyEe-EQK7BYgCqyw">
       <tags>deleted</tags>
     </bindings>
   </bindingTables>

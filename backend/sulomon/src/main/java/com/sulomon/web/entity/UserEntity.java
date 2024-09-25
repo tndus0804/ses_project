@@ -1,6 +1,18 @@
 package com.sulomon.web.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,12 +31,13 @@ import java.util.Set;
 @Table(name = "users")
 public class UserEntity {
 
+    // 유저 ID (AUTO_INCREMENT, PRIMARY KEY)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT를 JPA에서 지원하는 방식
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_num")
-    private int userNum;
+    private Integer userNum;
 
-    // 아이디 (VARCHAR 20)
+    // 아이디 (VARCHAR 20, NOT NULL, UNIQUE)
     @Column(name = "user_id", length = 20, nullable = false, unique = true)
     private String userId;
 
@@ -32,29 +45,29 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
-    // 이메일 (VARCHAR 100)
+    // 이메일 (VARCHAR 100, NOT NULL, UNIQUE)
     @Column(name = "email", length = 100, nullable = false, unique = true)
     private String email;
 
-    // 이름 (VARCHAR 100)
+    // 이름 (VARCHAR 100, NOT NULL)
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    // 생년월일 (DATE)
+    // 생년월일 (DATE, NOT NULL)
     @Column(name = "birthday", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date birthday;
 
-    // 성별 (ENUM)
+    // 성별 (ENUM, NOT NULL)
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
     private Gender gender;
 
-    // 소셜 로그인 여부 (BOOLEAN)
+    // 소셜 로그인 여부 (BOOLEAN, NOT NULL)
     @Column(name = "social_login", nullable = false)
     private boolean socialLogin = false;
 
-    // 사용자 역할 (ENUM)
+    // 사용자 역할 (ENUM, NOT NULL)
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role = Role.USER;
@@ -71,11 +84,11 @@ public class UserEntity {
     @Column(name = "mbti", length = 4)
     private String mbti;
 
-    // 포인트 (INT)
+    // 포인트 (INT, NOT NULL)
     @Column(name = "points", nullable = false)
-    private int points = 0;
+    private Integer points = 0;
 
-    // 계정 생성 시간 (DATETIME)
+    // 계정 생성 시간 (DATETIME, 최초 생성 시에만 설정되고 이후 수정 불가)
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -83,7 +96,7 @@ public class UserEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    // 계정 상태 (ENUM)
+    // 계정 상태 (ENUM, NOT NULL)
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status = Status.ACTIVE;

@@ -16,7 +16,7 @@ public class PostInterestId implements Serializable {
         this.interestId = interestId;
     }
 
-    // equals()와 hashCode()는 복합 키 비교를 위해 필요
+    // equals()와 hashCode()는 복합키 비교를 위해 필요
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
