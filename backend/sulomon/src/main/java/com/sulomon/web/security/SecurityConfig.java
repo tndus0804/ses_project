@@ -20,6 +20,7 @@ public class SecurityConfig {
     // 로그인 없이 접근 가능 경로
     private static final String[] PUBLIC_URLS = {
         "/"                     // root
+        , "/**"                 // 모든 경로 로그인 X (개발 후 수정 무조건 필요)
         , "/images/**"          // 이미지 경로
         , "/css/**"             // CSS 파일들
         , "/js/**"              // JavaScript 파일들
