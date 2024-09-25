@@ -1,18 +1,6 @@
 package com.sulomon.web.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,23 +22,23 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT를 JPA에서 지원하는 방식
     @Column(name = "user_num")
-    int userNum;
+    private int userNum;
 
-    // 아이디
+    // 아이디 (VARCHAR 20)
     @Column(name = "user_id", length = 20, nullable = false, unique = true)
-    String userId;
+    private String userId;
 
-    // 패스워드
+    // 패스워드 (VARCHAR 255)
     @Column(name = "password")
-    String password;
+    private String password;
 
-    // 이메일
+    // 이메일 (VARCHAR 100)
     @Column(name = "email", length = 100, nullable = false, unique = true)
-    String email;
+    private String email;
 
-    // 이름
+    // 이름 (VARCHAR 100)
     @Column(name = "name", length = 100, nullable = false)
-    String name;
+    private String name;
 
     // 생년월일 (DATE)
     @Column(name = "birthday", nullable = false)
@@ -72,15 +60,15 @@ public class UserEntity {
     private Role role = Role.USER;
 
     // 사용자 주소 (VARCHAR 255)
-    @Column(name = "address", length = 255)
+    @Column(name = "address")
     private String address;
 
     // 전화번호 (VARCHAR 30)
     @Column(name = "phone_number", length = 30)
     private String phoneNumber;
 
-    // MBTI (VARCHAR 10)
-    @Column(name = "mbti", length = 10)
+    // MBTI (CHAR 4)
+    @Column(name = "mbti", length = 4)
     private String mbti;
 
     // 포인트 (INT)
@@ -100,6 +88,7 @@ public class UserEntity {
     @Column(name = "status", nullable = false)
     private Status status = Status.ACTIVE;
 
+    // 사용자와 관심사의 다대다 관계를 정의
     @ManyToMany
     @JoinTable(
             name = "user_interests",

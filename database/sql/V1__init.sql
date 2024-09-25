@@ -1,4 +1,3 @@
-drop database sulomon;
 CREATE database sulomon;
 show databases;
  use sulomon;

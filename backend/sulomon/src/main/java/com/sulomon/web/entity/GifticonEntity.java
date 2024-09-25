@@ -22,13 +22,16 @@ public class GifticonEntity {
     @Column(name = "gifticon_id")
     int gifticonId;
 
+    // User 엔티티와 연관
     @ManyToOne
     @JoinColumn(name = "user_num", nullable = false)
-    UserEntity userNum; // User 엔티티와 연관
+    UserEntity userNum;
 
+    // 보낼 핸드폰 번호
     @Column(name = "phone_number", length = 30)
     String phoneNumber;
 
+    //
     @Column(name = "gifticon_type", length = 50)
     String gifticonType;
 

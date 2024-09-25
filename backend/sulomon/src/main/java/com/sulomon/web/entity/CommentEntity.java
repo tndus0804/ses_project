@@ -19,28 +19,34 @@ public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
-    private int commentId;
+    int commentId;
 
+    // 게시글과 연관된 엔티티
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
-    private PostsEntity postId; // 게시글과 연관된 엔티티
+    PostsEntity postId;
 
+    // 사용자와 연관된 엔티티, 삭제 시 NULL 처리
     @ManyToOne
     @JoinColumn(name = "user_num", nullable = true)
-    private UserEntity userNum; // 사용자와 연관된 엔티티, 삭제 시 NULL 처리
+    UserEntity userNum;
 
+    // 댓글 작성자 이름 (계정 삭제 후에도 유지)
     @Column(name = "username", nullable = false, length = 100)
-    private String username; // 댓글 작성자 이름 (계정 삭제 후에도 유지)
+    String username;
 
+    // 댓글 내용
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
-    private String content;
+    String content;
 
+    // 생성 날짜
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    LocalDateTime createdAt = LocalDateTime.now();
 
+    // 댓글 상태
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private CommentStatus status = CommentStatus.ACTIVE;
+    CommentStatus status = CommentStatus.ACTIVE;
 
     @PrePersist
     public void prePersist() {

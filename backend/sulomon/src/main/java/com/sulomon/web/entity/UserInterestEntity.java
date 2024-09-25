@@ -1,21 +1,10 @@
 package com.sulomon.web.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @Builder
@@ -23,6 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_interests")
+@IdClass(UserInterestId.class)  // 복합 키를 위한 IdClass 사용
 public class UserInterestEntity {
 
     // 사용자 번호 (users 테이블과 연결)
@@ -36,7 +26,4 @@ public class UserInterestEntity {
     @ManyToOne
     @JoinColumn(name = "interest_id", nullable = false)
     InterestEntity interestId;
-
-    @ManyToMany(mappedBy = "interests")
-    Set<UserEntity> user = new HashSet<>();
 }

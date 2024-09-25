@@ -54,7 +54,6 @@ public class PointWithdrawalRequestEntity {
     }
 
     // 요청 금액 제약 조건을 코드에서 처리하는 방식으로 적용 가능
-    @PrePersist
     @PreUpdate
     public void validateRequestedAmount() {
         if (requestedAmount <= 5500 || requestedAmount >= 100000) {
