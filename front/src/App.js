@@ -67,11 +67,11 @@ const App = () => {
           </ul>
         </nav>
 
-        <Routes>
+        <Routes basename="/web">
           <Route path="/" element={<MainPage />} />
           {/* 회원가입 / 로그인 */}
           <Route path="/login" element={<Login />} />
-          <Route path="/signUp" element={<SignUp />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/FindID" element={<FindID />} />
           <Route path="/FindPassword" element={<FindPassword />} />
           {/* 마이페이지 */}

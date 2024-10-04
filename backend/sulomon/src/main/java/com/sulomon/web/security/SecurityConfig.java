@@ -21,6 +21,7 @@ public class SecurityConfig {
     private static final String[] PUBLIC_URLS = {
         "/"                     // root
         , "/**"                 // 모든 경로 로그인 X (개발 후 수정 무조건 필요)
+        ,"/web/signup"          // 회원가입 경로 추가
         , "/images/**"          // 이미지 경로
         , "/css/**"             // CSS 파일들
         , "/js/**"              // JavaScript 파일들
@@ -53,7 +54,7 @@ public class SecurityConfig {
             );
 
         http
-            .cors(cors -> cors.disable())         // CORS (Cross-Origin Resource Sharing) 설정 비활성화
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))         // CORS (Cross-Origin Resource Sharing) 설정 비활성화
             .csrf(csrf -> csrf.disable());        // CSRF (Cross-Site Request Forgery) 보호 비활성화
 
         return http.build();
