@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -60,7 +62,7 @@ public class UserEntity {
     private boolean socialLogin;
 
     // 사용자 역할 (VARCHAR 10, NOT NULL, DEFAULT USER)
-    @Column(name = "role", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'USER'")
+    @Column(name = "role", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'user'")
     private String role;
 
     // 사용자 주소 (VARCHAR 255)
@@ -88,7 +90,17 @@ public class UserEntity {
     private LocalDateTime updatedAt;
 
     // 계정 상태 (VARCHAR 10, NOT NULL)
-    @Column(name = "status", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
+    @Column(name = "status", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'active'")
     private String status;
 
+    @PrePersist
+    public void prePersist() {
+        if(role == null) this.role = "user";
+        this.createdAt = LocalDateTime.now(); // 처음 저장할 때 생성 시간 설정
+        if(status == null) this.status = "active"; // 상태
+    }
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now(); // 수정할 때마다 수정 시간을 현재 시간으로 갱신
+    }
 }

@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -54,8 +56,8 @@ public class PostEntity {
     @Column(name = "image_path")
     private String imagePath;
 
-    // 공개 / 비공개 상태 (VARCHAR 10, NOT NULL, DEFAULT VISIBLE)
-    @Column(name = "visibility", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'VISIBLE'")
+    // 공개 / 비공개 상태 (VARCHAR 10, NOT NULL, DEFAULT visible)
+    @Column(name = "visibility", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'visible'")
     private String visibility; // 기본값은 'visible'
 
     // 비공개 게시글의 암호 (VARCHAR 255)
@@ -70,8 +72,20 @@ public class PostEntity {
     @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
 
-    // 게시글 상태 (VARCHAR 10, NOT NULL)
-    @Column(name = "status", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
+    // 게시글 상태 (VARCHAR 10, NOT NULL, DEFAULT active)
+    @Column(name = "status", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'active'")
     private String status;// 기본값은 'active'
 
+    @PrePersist
+    public void prePersist() {
+//        if(visibility == null) this.visibility = "visible"; // 공개 상태
+        this.createdAt = LocalDateTime.now(); // 처음 저장할 때 생성 시간 설정
+        if(status == null) this.status = "active"; // 게시글 상태
+    }
+
+    // 게시글 수정 시 수정 시간을 갱신하는 메서드
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now(); // 수정할 때마다 현재 시간으로 갱신
+    }
 }

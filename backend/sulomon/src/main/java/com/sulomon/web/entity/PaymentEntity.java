@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,15 +34,24 @@ public class PaymentEntity {
     private BigDecimal amount; // 결제 금액
 
     // 결제 방법 (VARCHAR로 변경, NOT NULL)
-    @Column(name = "payment_method", nullable = false, length = 20)
-    private String paymentMethod; // 결제 방법 ('TOSS', 'NAVER_PAY', 'KAKAO_PAY')
+    @Column(name = "payment_method", nullable = false, length = 20, columnDefinition = "VARCHAR(20) DEFAULT 'toss'")
+    private String paymentMethod; // 결제 방법 ('toss', 'naver_pay', 'kakao_pay', 'failed')
 
     // 결제 상태 (VARCHAR로 변경, NOT NULL, 기본값 'PENDING')
-    @Column(name = "status", nullable = false, length = 20, columnDefinition = "VARCHAR(20) DEFAULT 'PENDING'")
-    private String status; // 결제 상태 ('PENDING', 'COMPLETED', 'FAILED')
+    @Column(name = "status", nullable = false, length = 20, columnDefinition = "VARCHAR(20) DEFAULT 'failed'")
+    private String status; // 결제 상태 ('pending', 'completed', 'failed')
 
     // 결제 생성 시간 (DATETIME, NOT NULL, DEFAULT CURRENT_TIMESTAMP)
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt; // 결제 생성 시간
 
+    // 결제 생성 시 생성 시간 설정
+    @PrePersist
+    public void prePersist() {
+        if(paymentMethod == null) {
+            this.paymentMethod = "failed";
+            this.status = "failed";
+        }
+        this.createdAt = LocalDateTime.now(); // 처음 저장할 때 시간 설정
+    }
 }

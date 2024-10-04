@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,7 +53,13 @@ public class CommentEntity {
     private LocalDateTime createdAt; // 댓글 생성 시간
 
     // 댓글 상태 (VARCHAR로 변경, 기본값 'active')
-    @Column(name = "status", nullable = false, length = 10, columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
+    @Column(name = "status", nullable = false, length = 10, columnDefinition = "VARCHAR(10) DEFAULT 'active'")
     private String status; // 댓글 상태 ('active', 'deleted')
 
+    @PrePersist
+    public void prePersist() {
+        if(content == null) this.content = "좋은 설문이에요."; // 댓글 내용
+        this.createdAt = LocalDateTime.now(); // 처음 저장할 때 생성 시간 설정
+        if(status == null) this.status = "active"; // 댓글 상태
+    }
 }
