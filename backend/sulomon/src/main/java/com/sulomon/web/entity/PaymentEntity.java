@@ -1,8 +1,6 @@
 package com.sulomon.web.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "payments")
+@Table(name = "payment")
 public class PaymentEntity {
 
     // 결제 ID (AUTO_INCREMENT, PRIMARY KEY)
@@ -35,15 +33,13 @@ public class PaymentEntity {
     @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal amount; // 결제 금액
 
-    // 결제 방법 (ENUM, NOT NULL)
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method", nullable = false)
-    private PaymentMethod paymentMethod; // 결제 방법 (TOSS, NAVER_PAY, KAKAO_PAY)
+    // 결제 방법 (VARCHAR로 변경, NOT NULL)
+    @Column(name = "payment_method", nullable = false, length = 20)
+    private String paymentMethod; // 결제 방법 ('TOSS', 'NAVER_PAY', 'KAKAO_PAY')
 
-    // 결제 상태 (ENUM, NOT NULL, DEFAULT PENDING)
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private PaymentStatus status = PaymentStatus.PENDING; // 결제 상태 (PENDING, COMPLETED, FAILED)
+    // 결제 상태 (VARCHAR로 변경, NOT NULL, 기본값 'PENDING')
+    @Column(name = "status", nullable = false, length = 20)
+    private String status = "PENDING"; // 결제 상태 ('PENDING', 'COMPLETED', 'FAILED')
 
     // 결제 생성 시간 (DATETIME, NOT NULL, DEFAULT CURRENT_TIMESTAMP)
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
@@ -53,15 +49,5 @@ public class PaymentEntity {
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now(); // 처음 저장할 때 시간 설정
-    }
-
-    // 결제 방법을 정의하는 ENUM (TOSS, NAVER_PAY, KAKAO_PAY)
-    public enum PaymentMethod {
-        TOSS, NAVER_PAY, KAKAO_PAY
-    }
-
-    // 결제 상태를 정의하는 ENUM (PENDING, COMPLETED, FAILED)
-    public enum PaymentStatus {
-        PENDING, COMPLETED, FAILED
     }
 }

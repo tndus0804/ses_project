@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "point_withdrawal_requests")
+@Table(name = "point_withdrawal_request")
 public class PointWithdrawalRequestEntity {
 
     // 출금 요청 ID (AUTO_INCREMENT, PRIMARY KEY)

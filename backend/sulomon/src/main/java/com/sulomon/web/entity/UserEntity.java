@@ -2,14 +2,9 @@ package com.sulomon.web.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -18,17 +13,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class UserEntity {
 
     // 유저 ID (AUTO_INCREMENT, PRIMARY KEY)
@@ -56,21 +49,19 @@ public class UserEntity {
     // 생년월일 (DATE, NOT NULL)
     @Column(name = "birthday", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date birthday;
+    private LocalDate birthday;
 
-    // 성별 (ENUM, NOT NULL)
-    @Enumerated(EnumType.STRING)
-    @Column(name = "gender", nullable = false)
-    private Gender gender;
+    // 성별 (VARCHAR 10, NOT NULL)
+    @Column(name = "gender", length = 10, nullable = false)
+    private String gender;
 
     // 소셜 로그인 여부 (BOOLEAN, NOT NULL)
     @Column(name = "social_login", nullable = false)
     private boolean socialLogin = false;
 
-    // 사용자 역할 (ENUM, NOT NULL)
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private Role role = Role.USER;
+    // 사용자 역할 (VARCHAR 10, NOT NULL)
+    @Column(name = "role", length = 10, nullable = false)
+    private String role = "user";
 
     // 사용자 주소 (VARCHAR 255)
     @Column(name = "address")
@@ -96,30 +87,8 @@ public class UserEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    // 계정 상태 (ENUM, NOT NULL)
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private Status status = Status.ACTIVE;
+    // 계정 상태 (VARCHAR 10, NOT NULL)
+    @Column(name = "status", length = 10, nullable = false)
+    private String status = "active";
 
-    // 사용자와 관심사의 다대다 관계를 정의
-    @ManyToMany
-    @JoinTable(
-            name = "user_interests",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "interest_id")
-    )
-    Set<InterestEntity> interests = new HashSet<>();
-
-    // ENUM 타입들 정의
-    public enum Gender {
-        MALE, FEMALE, OTHER
-    }
-
-    public enum Role {
-        USER, ADMIN
-    }
-
-    public enum Status {
-        ACTIVE, INACTIVE, BANNED
-    }
 }

@@ -19,11 +19,8 @@ public class GifticonDTO {
     private String phoneNumber;       // 받는 사람의 핸드폰 번호
     private String gifticonType;      // 기프티콘 종류
     private BigDecimal amount;        // 기프티콘 금액
-    private GifticonStatus status;    // 기프티콘 상태
+    private String status;    // 기프티콘 상태 (PENDING, SENT, FAILED)
     private LocalDateTime createdAt;  // 기프티콘 생성 시간
 
-    // 기프티콘 상태를 정의하는 ENUM (PENDING, SENT, FAILED)
-    public enum GifticonStatus {
-        PENDING, SENT, FAILED
-    }
+
 }

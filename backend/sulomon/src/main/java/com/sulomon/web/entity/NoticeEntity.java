@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "notices")
+@Table(name = "notice")
 public class NoticeEntity {
 
     // 공지사항 ID (AUTO_INCREMENT, PRIMARY KEY)

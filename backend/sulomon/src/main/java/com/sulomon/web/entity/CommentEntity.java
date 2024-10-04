@@ -2,8 +2,6 @@ package com.sulomon.web.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +21,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "comments")
+@Table(name = "comment")
 public class CommentEntity {
 
     // 댓글 ID (AUTO_INCREMENT, PRIMARY KEY)
@@ -35,12 +33,12 @@ public class CommentEntity {
     // 게시글과 연관된 엔티티 (ManyToOne 관계)
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
-    private PostsEntity postId; // 게시글과 연관된 PostsEntity
+    private PostEntity post; // 게시글과 연관된 PostEntity
 
     // 사용자와 연관된 엔티티, 사용자 삭제 시 NULL 처리 (ManyToOne 관계)
     @ManyToOne
     @JoinColumn(name = "user_num", nullable = true)
-    private UserEntity userNum; // 사용자와 연관된 UserEntity
+    private UserEntity user; // 사용자와 연관된 UserEntity
 
     // 댓글 작성자 이름 (계정 삭제 후에도 유지, VARCHAR 100, NOT NULL)
     @Column(name = "username", nullable = false, length = 100)
@@ -54,19 +52,13 @@ public class CommentEntity {
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt = LocalDateTime.now(); // 댓글 생성 시간
 
-    // 댓글 상태 (ENUM, 기본값 ACTIVE)
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private CommentStatus status = CommentStatus.ACTIVE; // 댓글 상태 (ACTIVE, DELETED)
+    // 댓글 상태 (VARCHAR로 변경, 기본값 'active')
+    @Column(name = "status", nullable = false, length = 10)
+    private String status = "active"; // 댓글 상태 ('active', 'deleted')
 
     // 댓글 저장 시 생성 날짜 설정
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now(); // 처음 저장할 때 생성 시간 설정
-    }
-
-    // 댓글 상태를 정의하는 ENUM (ACTIVE, DELETED)
-    public enum CommentStatus {
-        ACTIVE, DELETED
     }
 }

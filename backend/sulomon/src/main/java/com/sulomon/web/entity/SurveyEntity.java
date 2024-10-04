@@ -2,8 +2,6 @@ package com.sulomon.web.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,8 +22,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "surveys")
-public class SurveysEntity {
+@Table(name = "survey")
+public class SurveyEntity {
 
     // 설문조사 ID (AUTO_INCREMENT, PRIMARY KEY)
     @Id
@@ -46,19 +44,17 @@ public class SurveysEntity {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description; // 설문조사 설명
 
-    // 설문조사 폼 타입 (ENUM, 기본값 SITE_FORM)
-    @Enumerated(EnumType.STRING)
-    @Column(name = "form_type", nullable = false)
-    private FormType formType = FormType.SITE_FORM; // 폼 타입 (GOOGLE_FORM, SITE_FORM)
+    // 설문조사 폼 타입 (VARCHAR 20, 기본값 'site_form')
+    @Column(name = "form_type", length = 20, nullable = false)
+    private String formType = "site_form"; // 폼 타입 (google_form, site_form)
 
     // 참여자에게 지급할 포인트 (기본값 0)
     @Column(name = "points", nullable = false)
     private Integer points = 0; // 참여자에게 지급할 포인트
 
-    // 설문조사 상태 (ENUM, 기본값 DRAFT)
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private SurveyStatus status = SurveyStatus.DRAFT; // 설문 상태 (DRAFT, ACTIVE, COMPLETED, CLOSED, DELETED)
+    // 설문조사 상태 (VARCHAR 20, 기본값 'draft')
+    @Column(name = "status", length = 20, nullable = false)
+    private String status = "draft"; // 설문 상태 (draft, active, completed, closed, deleted)
 
     // 설문조사 생성 시간 (DATETIME, NOT NULL, 업데이트 불가)
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -71,15 +67,5 @@ public class SurveysEntity {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now(); // 수정할 때마다 수정 시간을 현재 시간으로 갱신
-    }
-
-    // 설문조사 폼 유형을 정의하는 ENUM (GOOGLE_FORM, SITE_FORM)
-    public enum FormType {
-        GOOGLE_FORM, SITE_FORM
-    }
-
-    // 설문조사 상태를 정의하는 ENUM (DRAFT, ACTIVE, COMPLETED, CLOSED, DELETED)
-    public enum SurveyStatus {
-        DRAFT, ACTIVE, COMPLETED, CLOSED, DELETED
     }
 }

@@ -2,8 +2,6 @@ package com.sulomon.web.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,7 +22,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "gifticons")
+@Table(name = "gifticon")
 public class GifticonEntity {
 
     // 기프티콘 ID (AUTO_INCREMENT, PRIMARY KEY)
@@ -50,10 +48,9 @@ public class GifticonEntity {
     @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal amount; // 기프티콘 금액
 
-    // 기프티콘 상태 (ENUM, 기본값 PENDING)
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private GifticonStatus status = GifticonStatus.PENDING; // 기프티콘 상태 (PENDING, SENT, FAILED)
+    // 기프티콘 상태 (VARCHAR로 변경, 기본값 PENDING)
+    @Column(name = "status", nullable = false, length = 10)
+    private String status = "pending"; // 기프티콘 상태 (pending, sent, failed)
 
     // 기프티콘 생성 시간 (DATETIME, 기본값 CURRENT_TIMESTAMP)
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
@@ -63,10 +60,5 @@ public class GifticonEntity {
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now(); // 처음 저장할 때 시간 설정
-    }
-
-    // 기프티콘 상태를 정의하는 ENUM (PENDING, SENT, FAILED)
-    public enum GifticonStatus {
-        PENDING, SENT, FAILED
     }
 }

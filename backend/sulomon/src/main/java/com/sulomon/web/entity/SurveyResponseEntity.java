@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "survey_responses")
+@Table(name = "survey_response")
 public class SurveyResponseEntity {
 
     // 응답 고유 ID (AUTO_INCREMENT, PRIMARY KEY)
@@ -33,7 +33,7 @@ public class SurveyResponseEntity {
     // 설문조사 ID (Surveys 테이블과 연관)
     @ManyToOne
     @JoinColumn(name = "survey_id", nullable = false)
-    private SurveysEntity survey; // 설문조사와 연관된 SurveysEntity
+    private SurveyEntity survey; // 설문조사와 연관된 SurveysEntity
 
     // 응답한 사용자 ID (Users 테이블과 연관)
     @ManyToOne
