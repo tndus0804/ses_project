@@ -55,13 +55,13 @@ public class UserEntity {
     @Column(name = "gender", length = 10, nullable = false)
     private String gender;
 
-    // 소셜 로그인 여부 (BOOLEAN, NOT NULL)
-    @Column(name = "social_login", nullable = false)
-    private boolean socialLogin = false;
+    // 소셜 로그인 여부 (BOOLEAN, NOT NULL, DEFAULT false)
+    @Column(name = "social_login", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean socialLogin;
 
-    // 사용자 역할 (VARCHAR 10, NOT NULL)
-    @Column(name = "role", length = 10, nullable = false)
-    private String role = "user";
+    // 사용자 역할 (VARCHAR 10, NOT NULL, DEFAULT USER)
+    @Column(name = "role", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'USER'")
+    private String role;
 
     // 사용자 주소 (VARCHAR 255)
     @Column(name = "address")
@@ -75,9 +75,9 @@ public class UserEntity {
     @Column(name = "mbti", length = 4)
     private String mbti;
 
-    // 포인트 (INT, NOT NULL)
-    @Column(name = "points", nullable = false)
-    private Integer points = 0;
+    // 포인트 (INT, NOT NULL, DEFAULT 0)
+    @Column(name = "points", nullable = false, columnDefinition = "INT DEFAULT 0")
+    private Integer points;
 
     // 계정 생성 시간 (DATETIME, 최초 생성 시에만 설정되고 이후 수정 불가)
     @Column(name = "created_at", updatable = false)
@@ -88,7 +88,7 @@ public class UserEntity {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     // 계정 상태 (VARCHAR 10, NOT NULL)
-    @Column(name = "status", length = 10, nullable = false)
-    private String status = "active";
+    @Column(name = "status", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
+    private String status = "ACTIVE";
 
 }

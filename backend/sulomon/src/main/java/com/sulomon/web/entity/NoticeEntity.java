@@ -7,8 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,22 +44,10 @@ public class NoticeEntity {
 
     // 공지 생성 시간 (DATETIME, 기본값 CURRENT_TIMESTAMP)
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt = LocalDateTime.now(); // 공지 생성 시간
+    private LocalDateTime createdAt; // 공지 생성 시간
 
     // 공지 수정 시간 (DATETIME, 기본값 CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
     @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private LocalDateTime updatedAt = LocalDateTime.now(); // 공지 수정 시간
+    private LocalDateTime updatedAt; // 공지 수정 시간
 
-    // 공지 생성 시 생성 시간과 수정 시간을 설정
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now(); // 처음 저장할 때 생성 시간 설정
-        this.updatedAt = LocalDateTime.now(); // 처음 저장할 때 수정 시간도 동일하게 설정
-    }
-
-    // 공지 수정 시 수정 시간을 현재로 갱신
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now(); // 업데이트할 때마다 수정 시간을 현재로 갱신
-    }
 }

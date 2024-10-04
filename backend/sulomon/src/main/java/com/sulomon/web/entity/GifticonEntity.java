@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,16 +48,10 @@ public class GifticonEntity {
     private BigDecimal amount; // 기프티콘 금액
 
     // 기프티콘 상태 (VARCHAR로 변경, 기본값 PENDING)
-    @Column(name = "status", nullable = false, length = 10)
-    private String status = "pending"; // 기프티콘 상태 (pending, sent, failed)
+    @Column(name = "status", nullable = false, length = 10, columnDefinition = "VARCHAR(10) DEFAULT 'PENDING'")
+    private String status; // 기프티콘 상태 (pending, sent, failed)
 
     // 기프티콘 생성 시간 (DATETIME, 기본값 CURRENT_TIMESTAMP)
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt = LocalDateTime.now(); // 기프티콘 생성 시간
-
-    // 기프티콘이 처음 저장될 때 생성 시간 설정
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now(); // 처음 저장할 때 시간 설정
-    }
+    private LocalDateTime createdAt; // 기프티콘 생성 시간
 }
