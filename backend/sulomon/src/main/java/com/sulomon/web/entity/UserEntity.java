@@ -80,15 +80,15 @@ public class UserEntity {
     private Integer points;
 
     // 계정 생성 시간 (DATETIME, 최초 생성 시에만 설정되고 이후 수정 불가)
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "created_at", updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
 
     // 계정 수정 시간 (DATETIME)
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    @Column(name = "updated_at", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private LocalDateTime updatedAt;
 
     // 계정 상태 (VARCHAR 10, NOT NULL)
     @Column(name = "status", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
-    private String status = "ACTIVE";
+    private String status;
 
 }
