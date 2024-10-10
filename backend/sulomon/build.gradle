@@ -34,6 +34,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// flyway
+	//  MAJOR.MINOR.PATCH (SemVer)
+	implementation 'org.flywaydb:flyway-mysql:10.17.3'
+
 }
 
 tasks.named('test') {
