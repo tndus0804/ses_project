@@ -2,11 +2,15 @@ package com.sulomon.web.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -17,61 +21,59 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // 로그인 없이 접근 가능 경로
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final UserDetailsServiceImpl userDetailsService;
+
+    // 공개된 URL 설정 (로그인 없이 접근 가능)
     private static final String[] PUBLIC_URLS = {
-        "/"                     // root
-        , "/**"                 // 모든 경로 로그인 X (개발 후 수정 무조건 필요)
-        ,"/web/signup"          // 회원가입 경로 추가
-        , "/images/**"          // 이미지 경로
-        , "/css/**"             // CSS 파일들
-        , "/js/**"              // JavaScript 파일들
-        , "/api/**"           // 연동 테스트 
+            "/**",
+            "/login",          // 로그인 경로
+            "/signup",         // 회원가입 경로
+            "/images/**",           // 이미지 경로
+            "/css/**",              // CSS 경로
+            "/js/**",               // JS 파일 경로
+            "/api/**"               // API 연동 테스트
     };
-    
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserDetailsServiceImpl userDetailsService) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.userDetailsService = userDetailsService;
+    }
+
+    // AuthenticationManager 빈 등록
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // 요청에 대한 권한 설정
-            .authorizeHttpRequests(author -> author
-                .requestMatchers(PUBLIC_URLS).permitAll()   // 모두 접근 허용
-                .anyRequest().authenticated()               // 그 외의 모든 요청은 인증 필요
-            )
-            // HTTP Basic 인증을 사용하도록 설정
-            .httpBasic(Customizer.withDefaults())           // HTTP Basic 인증 설정
-            // 폼 로그인 설정
-            .formLogin(formLogin -> formLogin
-                    .loginPage("/member/loginForm")         // 로그인폼 페이지 경로
-                    .usernameParameter("id")                // 폼의 ID 파라미터 이름
-                    .passwordParameter("password")          // 폼의 비밀번호 파라미터 이름
-                    .loginProcessingUrl("/member/login")    // 로그인폼 제출하여 처리할 경로
-                    .defaultSuccessUrl("/", true)           // 로그인 성공 시 이동할 경로
-                    .permitAll()                            // 로그인 페이지는 모두 접근 허용
-            )
-            // 로그아웃 설정
-            .logout(logout -> logout
-                    .logoutUrl("/member/logout")            // 로그아웃 처리 경로
-                    .logoutSuccessUrl("/")                  // 로그아웃 성공 시 이동할 경로
-            );
-
-        http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))         // CORS (Cross-Origin Resource Sharing) 설정 비활성화
-            .csrf(csrf -> csrf.disable());        // CSRF (Cross-Site Request Forgery) 보호 비활성화
+                .csrf(csrf -> csrf.disable())  // CSRF 비활성화
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 비활성화
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(PUBLIC_URLS).permitAll()   // 공개된 경로
+                        .anyRequest().authenticated()               // 그 외 모든 요청은 인증 필요
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
 
         return http.build();
     }
 
-    // 비밀번호 암호화를 위한 인코더를 빈으로 등록
+    // 비밀번호 암호화를 위한 BCryptPasswordEncoder 빈 등록
     @Bean
-    public BCryptPasswordEncoder getPasswordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
+    // CORS 설정을 위한 Bean
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // React 앱이 실행되는 주소
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);  // 인증 정보 허용 (세션, 쿠키 등을 사용할 경우)
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

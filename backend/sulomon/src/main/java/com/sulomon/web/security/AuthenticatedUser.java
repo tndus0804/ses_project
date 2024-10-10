@@ -31,13 +31,13 @@ public class AuthenticatedUser implements UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return this.password;
+    public String getUsername() {
+        return userId;
     }
 
     @Override
-    public String getUsername() {
-        return this.userId;
+    public String getPassword() {
+        return password;
     }
 
     @Override
