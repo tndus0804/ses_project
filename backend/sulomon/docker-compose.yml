@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  sample_auth_mysql8:
+    # MySQL 8 공식 이미지
+    image: mysql:8.0 # docker hub https://hub.docker.com
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --range_optimizer_max_mem_size=16777216
+    environment:
+      MYSQL_DATABASE: sulomon
+      MYSQL_USER: abcd
+      MYSQL_ROOT_PASSWORD: abcd
+      MYSQL_PASSWORD: abcd
+      MYSQL_ROOT_HOST: "%"
+      TZ: Asia/Seoul
+    ports:
+      - 3307:3306 # 외부 포트(접근용):내부 포트(컨테이너 내부용. 바꾸면 안 됨.)
+    restart: on-failure
+    volumes:
+      # {내 PC의 경로 또는 볼륨 컨테이너} : {컨테이너 내부 경로} 두 경로가 링크됨.
+      - ./db/mysql:/var/lib/mysql
+      - ./db/config/auth:/docker-entrypoint-initdb.d/
+
+## volume container (내 로컬 PC의 경로 대신 볼륨 컨테이너를 사용한 경우)
+#volumes:
+#  sticky_volume_auth_mysql:
