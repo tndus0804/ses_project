@@ -1,4 +1,4 @@
-package com.sulomon.web.entity;
+package com.sulomon.auth.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -28,9 +29,9 @@ public class UserEntity {
 
     // 유저 ID (AUTO_INCREMENT, PRIMARY KEY)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "user_num")
-    private Integer userNum;
+    private UUID userNum;
 
     // 아이디 (VARCHAR 20, NOT NULL, UNIQUE)
     @Column(name = "user_id", length = 20, nullable = false, unique = true)

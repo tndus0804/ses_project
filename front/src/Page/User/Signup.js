@@ -105,6 +105,15 @@ const Signup = () => {
 
   const [error, setError] = useState("");
 
+  const handleIdCheck = () => {
+    // 팝업창을 띄움
+    // const popupWindow = window.open(
+    //   "/idCheck",
+    //   "아이디 중복 확인",
+    //   "width=500,height=300"
+    // );
+  };
+
   // 폼 제출 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -144,7 +153,20 @@ const Signup = () => {
 
       if (response.ok) {
         console.log("회원가입 성공");
-        // 성공 시 원하는 경로로 리디렉션 또는 알림 처리
+        // 회원가입 성공 후 폼 초기화
+        setForm({
+          userId: "",
+          password: "",
+          confirmPassword: "",
+          address: "",
+          name: "",
+          birthday: "",
+          gender: "",
+          phoneNumber: "",
+          email: "",
+          emailDomain: "",
+          mbti: "",
+        });
       } else {
         console.error("회원가입 실패");
       }
@@ -164,6 +186,7 @@ const Signup = () => {
             name="userId"
             value={form.userId}
             onChange={handleChange}
+            // onClick={handleIdCheck}
             required
           />
         </Label>

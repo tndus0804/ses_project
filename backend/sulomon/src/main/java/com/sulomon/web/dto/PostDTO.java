@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -15,7 +16,7 @@ import java.util.Set;
 public class PostDTO {
 
     private int postId;                // 게시물 ID
-    private int userNum;               // 작성자 ID
+    private UUID userNum;               // 작성자 ID
     private String title;              // 게시물 제목
     private String content;            // 게시물 내용
     private String category;           // 카테고리

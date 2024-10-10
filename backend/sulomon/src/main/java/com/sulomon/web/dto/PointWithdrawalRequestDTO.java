@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 public class PointWithdrawalRequestDTO {
 
     private Integer withdrawalId;          // 출금 요청 ID
-    private Integer userNum;               // 사용자 ID
+    private UUID userNum;               // 사용자 ID
     private Integer requestedAmount;       // 요청 금액
     private String bankName;               // 은행 이름
     private String accountNumber;          // 계좌 번호

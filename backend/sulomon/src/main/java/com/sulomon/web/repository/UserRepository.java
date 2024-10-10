@@ -1,6 +1,6 @@
 package com.sulomon.web.repository;
 
-import com.sulomon.web.entity.UserEntity;
+import com.sulomon.auth.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

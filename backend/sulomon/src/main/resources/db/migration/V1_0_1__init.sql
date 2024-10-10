@@ -4,31 +4,28 @@ use sulomon;
 
 -- 유저 관련 테이블 (포인트 포함)
 CREATE TABLE IF NOT EXISTS `user` (
-    user_num    INT             AUTO_INCREMENT PRIMARY KEY      COMMENT '사용자 고유 번호',
-    user_id     VARCHAR(20)     UNIQUE NOT NULL                 COMMENT '로그인에 사용되는 유저 아이디',
+    user_num    BINARY(16)      PRIMARY KEY                     COMMENT '사용자 고유 번호',
+    user_id     VARCHAR(255)    UNIQUE NOT NULL                 COMMENT '로그인에 사용되는 유저 아이디',
     password    VARCHAR(255),                                   -- 해시화된 비밀번호
-    email       VARCHAR(100)    UNIQUE NOT NULL,                -- 사용자 이메일 주소 (고유)
-    name        VARCHAR(100)    NOT NULL,                 -- 사용자 실명
-    birthday    DATE            NOT NULL,                     -- 사용자 생년월일
-    gender      VARCHAR(10)     NOT NULL,                -- 성별
-                                CHECK (gender IN ('male', 'female', 'other')),  -- 성별 제약 조건
+    email       VARCHAR(255)    UNIQUE,                -- 사용자 이메일 주소 (고유)
+    name        VARCHAR(255),                 -- 사용자 실명
+    birthday    DATE,                     -- 사용자 생년월일
+    gender      VARCHAR(10),                -- 성별
     social_login BOOLEAN        DEFAULT FALSE, -- 소셜 로그인 여부
-    role        VARCHAR(10)     DEFAULT 'user', -- 사용자 역할
-                                CHECK (role IN ('user', 'admin')), -- 역할 제약 조건
-    
+    role        VARCHAR(30)     DEFAULT 'user', -- 사용자 역할
+
     -- 수정 가능한 유저 정보
     address     VARCHAR(255),                       -- 사용자 주소
     phone_number VARCHAR(30),                       -- 사용자 전화번호
     mbti        CHAR(4),                            -- MBTI 성격 유형
     
     -- 포인트 정보
-    points INT DEFAULT 0,                       -- 유저의 초기 포인트는 0
+    points      INT             DEFAULT 0,                       -- 유저의 초기 포인트는 0
     
     -- 만든 날짜 및 정보 수정한 날짜
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- 계정 생성 시간
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- 계정 수정 시간
-    status VARCHAR(10) DEFAULT 'active',         -- 계정 상태
-    CHECK (status IN ('active', 'inactive', 'banned'))  -- 상태 제약 조건
+    created_at  TIMESTAMP(6)    DEFAULT CURRENT_TIMESTAMP(6), -- 계정 생성 시간
+    updated_at  TIMESTAMP(6)    DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), -- 계정 수정 시간
+    status      VARCHAR(30)     DEFAULT 'PENDING'         -- 계정 상태
 );
 
 
@@ -37,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- 설문조사 테이블
 CREATE TABLE IF NOT EXISTS `survey` (
     survey_id INT AUTO_INCREMENT PRIMARY KEY, -- 설문조사 고유 ID
-    user_num INT NOT NULL,                     -- 설문조사 작성자 번호 (users 테이블과 연결)
+    user_num BINARY(16) NOT NULL,                     -- 설문조사 작성자 번호 (users 테이블과 연결)
     title VARCHAR(255) NOT NULL,               -- 설문조사 제목
     description TEXT,                          -- 설문조사 내용
     form_type VARCHAR(20) DEFAULT 'site_form', -- 폼 타입
@@ -66,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `survey_question` (
 CREATE TABLE IF NOT EXISTS `survey_response` (
     response_id INT AUTO_INCREMENT PRIMARY KEY, -- 응답 고유 ID
     survey_id INT NOT NULL,                     -- 설문조사 ID (surveys 테이블과 연결)
-    user_num INT NOT NULL,                       -- 응답한 사용자 번호 (users 테이블과 연결)
+    user_num BINARY(16) NOT NULL,                       -- 응답한 사용자 번호 (users 테이블과 연결)
     responses JSON NOT NULL,                    -- 응답 내용 (JSON 형식으로 저장)
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- 응답 생성 시간
     FOREIGN KEY (survey_id) REFERENCES `survey`(survey_id), -- surveys 테이블의 survey_id를 참조하는 외래 키
@@ -79,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `survey_response` (
 -- 게시판 테이블 (이미지 경로, 공개/비공개 상태, 비공개 게시글 암호 포함)
 CREATE TABLE IF NOT EXISTS `post` (
     post_id INT AUTO_INCREMENT PRIMARY KEY,    -- 게시글 고유 ID
-    user_num INT NOT NULL,                     -- 작성자 번호 (users 테이블과 연결)
+    user_num BINARY(16) NOT NULL,                     -- 작성자 번호 (users 테이블과 연결)
     title VARCHAR(255) NOT NULL,               -- 게시글 제목
     content TEXT NOT NULL,                     -- 게시글 내용
     category VARCHAR(50),                      -- 게시글 카테고리
@@ -99,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `post` (
 -- 결제 및 기프티콘 관련 테이블
 CREATE TABLE IF NOT EXISTS `payment` (
     payment_id INT AUTO_INCREMENT PRIMARY KEY, -- 결제 고유 ID
-    user_num INT NOT NULL,                     -- 결제한 사용자 번호 (users 테이블과 연결)
+    user_num BINARY(16) NOT NULL,                     -- 결제한 사용자 번호 (users 테이블과 연결)
     amount DECIMAL(10, 2) NOT NULL,            -- 결제 금액
     payment_method VARCHAR(20) NOT NULL,       -- 결제 수단
     CHECK (payment_method IN ('toss', 'naver_pay', 'kakao_pay', 'failed')),  -- 결제 수단 제약 조건
@@ -112,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `payment` (
 -- 기프티콘 테이블
 CREATE TABLE IF NOT EXISTS `gifticon` (
     gifticon_id INT AUTO_INCREMENT PRIMARY KEY,  -- 기프티콘 고유 ID
-    user_num INT NOT NULL,                       -- 기프티콘 구매자 번호 (users 테이블과 연결)
+    user_num BINARY(16) NOT NULL,                       -- 기프티콘 구매자 번호 (users 테이블과 연결)
     phone_number VARCHAR(30),                    -- 기프티콘 전송할 전화번호
     gifticon_type VARCHAR(50),                   -- 기프티콘 종류
     amount DECIMAL(10, 2) NOT NULL,              -- 기프티콘 금액
@@ -125,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `gifticon` (
 -- 포인트 인출 요청 테이블 (은행명 및 계좌번호 추가, 금액 제약 조건 포함)
 CREATE TABLE IF NOT EXISTS `point_withdrawal_request` (
     withdrawal_id INT AUTO_INCREMENT PRIMARY KEY,  -- 인출 요청 고유 ID
-    user_num INT NOT NULL,                         -- 요청한 사용자 번호 (users 테이블과 연결)
+    user_num BINARY(16) NOT NULL,                         -- 요청한 사용자 번호 (users 테이블과 연결)
     requested_amount INT NOT NULL,                 -- 요청한 인출 금액 (포인트 단위, 5,500원 이상 100,000원 이하)
     CHECK (requested_amount >= 5500 AND requested_amount <= 100000), -- 금액 제약 조건 추가
     bank_name VARCHAR(100) NOT NULL,               -- 인출할 은행명
@@ -140,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `point_withdrawal_request` (
 -- 공지사항 관련 테이블
 CREATE TABLE IF NOT EXISTS `notice` (
     notice_id INT AUTO_INCREMENT PRIMARY KEY, -- 공지사항 고유 ID
-    admin_num INT NOT NULL,                          -- 작성한 관리자 번호 (users 테이블과 연결)
+    admin_num BINARY(16) NOT NULL,                          -- 작성한 관리자 번호 (users 테이블과 연결)
     title VARCHAR(255) NOT NULL,                    -- 공지사항 제목
     content TEXT NOT NULL,                          -- 공지사항 내용
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,  -- 공지사항 생성 시간
@@ -154,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `notice` (
 CREATE TABLE IF NOT EXISTS `comment` (
     comment_id INT AUTO_INCREMENT PRIMARY KEY,  -- 댓글 고유 ID
     post_id INT NOT NULL,                       -- 게시글 ID (posts 테이블과 연결)
-    user_num INT,                               -- 댓글 작성자 번호 (users 테이블과 연결, 탈퇴한 경우 NULL)
+    user_num BINARY(16),                               -- 댓글 작성자 번호 (users 테이블과 연결, 탈퇴한 경우 NULL)
     username VARCHAR(100) NOT NULL,             -- 댓글 작성자 이름 (계정 삭제 시에도 남음)
     content TEXT NOT NULL,                      -- 댓글 내용
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- 댓글 생성 시간

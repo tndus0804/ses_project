@@ -24,6 +24,34 @@ services:
       - ./db/mysql:/var/lib/mysql
       - ./db/config/auth:/docker-entrypoint-initdb.d/
 
+  demo-valkey-primary:
+    image: bitnami/valkey:7.2 # redis alternative
+    ports:
+      - '6389:6379'
+    environment:
+      - VALKEY_REPLICATION_MODE=master
+      - VALKEY_PASSWORD=root
+      - VALKEY_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    volumes:
+      - 'sticky_volume_demo-valkey-primary:/bitnami/valkey/data'
+
+  demo-valkey-secondary:
+    image: bitnami/valkey:7.2
+    ports:
+      - '6388:6379'
+    depends_on:
+      - demo-valkey-primary
+    environment:
+      - VALKEY_REPLICATION_MODE=slave
+      - VALKEY_MASTER_HOST=demo-valkey-primary
+      - VALKEY_MASTER_PORT_NUMBER=6379
+      - VALKEY_MASTER_PASSWORD=root
+      - VALKEY_PASSWORD=root
+      - VALKEY_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+
+volumes:
+  sticky_volume_demo-valkey-primary:
+    driver: local
 ## volume container (내 로컬 PC의 경로 대신 볼륨 컨테이너를 사용한 경우)
 #volumes:
 #  sticky_volume_auth_mysql:

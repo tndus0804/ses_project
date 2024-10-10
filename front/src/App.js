@@ -16,6 +16,7 @@ import GlobalFontStyle from "./Components/GlobalFontStyle";
 import Header from "./Components/Header";
 import FindID from "./Page/User/FindID";
 import FindPassword from "./Page/User/FindPassword";
+import IdCheck from "./Page/User/IdCheck";
 
 // 설문조사
 import SurveyForm from "./Page/Survey/Write/SurveyForm";
@@ -70,7 +71,8 @@ const App = () => {
         <Routes basename="/web">
           <Route path="/" element={<MainPage />} />
           {/* 회원가입 / 로그인 */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/loginForm" element={<Login />} />
+          <Route path="/idCheck" element={<IdCheck />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/FindID" element={<FindID />} />
           <Route path="/FindPassword" element={<FindPassword />} />

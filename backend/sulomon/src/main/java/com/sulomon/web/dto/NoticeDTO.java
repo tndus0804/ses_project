@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 public class NoticeDTO {
 
     private Integer noticeId;           // 공지사항 ID
-    private Integer adminNum;           // 관리자 ID
+    private UUID adminNum;           // 관리자 ID
     private String title;               // 공지사항 제목
     private String content;             // 공지사항 내용
     private LocalDateTime createdAt;    // 공지 생성 시간

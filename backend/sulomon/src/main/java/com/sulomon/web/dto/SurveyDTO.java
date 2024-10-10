@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 public class SurveyDTO {
 
     private Integer surveyId;        // 설문조사 ID
-    private Integer userNum;         // 설문조사 작성자 ID
+    private UUID userNum;         // 설문조사 작성자 ID
     private String title;            // 설문조사 제목
     private String description;      // 설문조사 설명
     private String formType;       // 설문조사 폼 유형 (GOOGLE_FORM, SITE_FORM)

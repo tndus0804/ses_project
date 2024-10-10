@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 public class GifticonDTO {
 
     private Integer gifticonId;       // 기프티콘 ID
-    private Integer userNum;          // 사용자 ID
+    private UUID userNum;          // 사용자 ID
     private String phoneNumber;       // 받는 사람의 핸드폰 번호
     private String gifticonType;      // 기프티콘 종류
     private BigDecimal amount;        // 기프티콘 금액

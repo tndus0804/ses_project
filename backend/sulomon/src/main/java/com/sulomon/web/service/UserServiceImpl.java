@@ -1,12 +1,12 @@
 package com.sulomon.web.service;
 
 import com.sulomon.web.dto.UserDTO;
-import com.sulomon.web.entity.UserEntity;
+import com.sulomon.auth.entity.UserEntity;
 import com.sulomon.web.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository ur;
     // 암호화
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public boolean idCheck(String searchId) {
@@ -30,11 +30,11 @@ public class UserServiceImpl implements UserService {
     public void join(UserDTO userDTO) {
         // UserDTO -> UserEntity 변환
         UserEntity userEntity = convertDtoToEntity(userDTO);
-//        log.info("UserEntity 정보: {}", userEntity);
+        log.info("UserEntity 정보: {}", userEntity);
 
         // 데이터베이스에 저장
         ur.save(userEntity);
-//        log.info("회원가입 성공 아이디: {}", userDTO.getUserId());
+        log.info("회원가입 성공 아이디: {}", userDTO.getUserId());
     }
 
     // UserDTO -> UserEntity 변환 메서드

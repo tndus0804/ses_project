@@ -1,6 +1,6 @@
 package com.sulomon.web.security;
 
-import com.sulomon.web.entity.UserEntity;
+import com.sulomon.auth.entity.UserEntity;
 import com.sulomon.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
