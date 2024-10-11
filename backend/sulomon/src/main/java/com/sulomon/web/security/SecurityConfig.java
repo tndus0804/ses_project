@@ -63,7 +63,27 @@ public class SecurityConfig {
     // 비밀번호 암호화를 위한 BCryptPasswordEncoder 빈 등록
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder() { // new 클래스나인터페이스() {/* 즉석에서 상속(구현) */} // 익명 객체(익명 클래스)
+            // {bcrypt}$2a$10${솔트 16바이트의 Base64(22글자)}{해싱된 값의 Base64}
+            private static final String PREFIX = "{bcrypt}";
+
+            @Override
+            public String encode(CharSequence rawPassword) {
+                return PREFIX + super.encode(rawPassword);
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                encodedPassword = encodedPassword.substring(PREFIX.length());
+                return super.matches(rawPassword, encodedPassword);
+            }
+        };
+    }
+
+    // 비밀번호 암호화를 위한 BCryptPasswordEncoder 빈 등록
+    @Bean
+    public PasswordEncoder refreshTokenEncoder() {
+        return new BCryptPasswordEncoder(8); // temporary
     }
 
     // CORS 설정을 위한 Bean

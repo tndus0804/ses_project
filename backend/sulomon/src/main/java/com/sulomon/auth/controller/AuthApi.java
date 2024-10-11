@@ -37,19 +37,21 @@ public class AuthApi {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid AuthRequest authRequest) {
+    public ResponseEntity<?> login(
+            @RequestBody @Valid AuthRequest authRequest,
+            HttpServletResponse response
+    ) {
 
         log.info("토큰 : {}", authRequest);
 
         try {
             // 암호화된 비밀번호와 입력된 비밀번호 비교
-            UserEntity userEntity = userRepository.findByUserId(authRequest.userId())
-                    .orElseThrow(() -> new UsernameNotFoundException("아이디 또는 비밀번호가 틀렸습니다."));
+            boolean exists = userRepository.existsByUserId(authRequest.userId());
+            if (!exists) {
+                throw new UsernameNotFoundException("아이디 또는 비밀번호가 일치하지 않습니다.");
+            }
 
-//            if (!passwordEncoder.matches(authRequest.password(), userEntity.getPassword())) {
-//                throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
-//            }
-
+            // 아이디, 비밀번호 맞는지 확인 (틀리면 예외, 맞으면 반환)
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.userId(), authRequest.password())
             );
