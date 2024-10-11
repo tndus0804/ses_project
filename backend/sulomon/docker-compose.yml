@@ -52,6 +52,7 @@ services:
 volumes:
   sticky_volume_demo-valkey-primary:
     driver: local
+
 ## volume container (내 로컬 PC의 경로 대신 볼륨 컨테이너를 사용한 경우)
 #volumes:
 #  sticky_volume_auth_mysql:
