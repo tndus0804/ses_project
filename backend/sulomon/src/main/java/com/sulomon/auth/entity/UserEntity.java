@@ -27,7 +27,7 @@ import java.util.UUID;
 @Table(name = "user")
 public class UserEntity {
 
-    // 유저 ID (AUTO_INCREMENT, PRIMARY KEY)
+    // 유저 ID (PRIMARY KEY)
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "user_num")
