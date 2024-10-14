@@ -133,11 +133,11 @@ function Login() {
 
       if (response.ok) {
         const data = await response.json(); // JWT 토큰을 포함한 응답 데이터
-        const token = data.token; // 서버에서 반환한 JWT 토큰
+        const token = data.access_token; // 서버에서 반환한 JWT 토큰
 
         // JWT를 로컬 스토리지에 저장
         localStorage.setItem("token", token);
-
+        console.log(data);
         console.log("로그인 성공, JWT:", token);
 
         // 로그인 성공 후 리디렉션
