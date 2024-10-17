@@ -69,6 +69,7 @@ public class SurveyEntity {
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now(); // 처음 저장할 때 생성 시간 설정
+        this.updatedAt = LocalDateTime.now(); // 첫 수정은 생성 시간과 동일
         if(status == null) this.status = "active"; // 상태
     }
     @PreUpdate
