@@ -2,10 +2,10 @@ package com.sulomon.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sulomon.web.dto.UserDTO;
+import com.sulomon.web.security.JwtUtil;
 import com.sulomon.web.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +24,7 @@ public class UserController {
 
     private final UserService us;
     private final ObjectMapper objectMapper; // ObjectMapper 추가
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
     public String join(@RequestBody Map<String, Object> signupData) {
@@ -42,5 +43,20 @@ public class UserController {
 
         return "redirect:/";
     }
+
+    @PostMapping("/verify-password")
+    public ResponseEntity<?> verifyPassword(@RequestBody Map<String, String> requestBody) {
+        String token = requestBody.get("token");
+        String password = requestBody.get("password");
+        String username = jwtUtil.extractUsername(token);
+
+        boolean check = us.passwordCheck(username, password);
+        if (check) {
+            return ResponseEntity.ok().body("Password verified");
+        } else {
+            return ResponseEntity.status(401).body("Invalid password");
+        }
+    }
+
 
 }
