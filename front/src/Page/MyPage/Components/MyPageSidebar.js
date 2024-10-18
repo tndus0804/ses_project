@@ -75,27 +75,44 @@ const Sidebar = () => {
     <SidebarContainer>
       <SidebarTitle>{title}</SidebarTitle>
       <SidebarBox>
-        <SidebarItem to="/mypageMain" activeClassName="active">
+        <SidebarItem
+          to="/mypageMain"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
           {edit}
         </SidebarItem>
-        <SidebarItem to="/participation" activeClassName="active">
+        <SidebarItem
+          to="/participation"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
           {participation}
         </SidebarItem>
-        <SidebarItem to="/mySurveys" activeClassName="active">
+        <SidebarItem
+          to="/mySurveys"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
           {surveys}
         </SidebarItem>
-        <SidebarItem to="/pointHistory" activeClassName="active">
+        <SidebarItem
+          to="/pointHistory"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
           {point}
         </SidebarItem>
-        <SidebarItem to="/paymentHistory" activeClassName="active">
+        <SidebarItem
+          to="/paymentHistory"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
           {payment}
         </SidebarItem>
-        <SidebarItem to="/gifticons" activeClassName="active">
+        <SidebarItem
+          to="/gifticons"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
           {gifticons}
         </SidebarItem>
       </SidebarBox>
     </SidebarContainer>
   );
 };
-
 export default Sidebar;
