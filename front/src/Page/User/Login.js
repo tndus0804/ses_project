@@ -137,18 +137,48 @@ function Login() {
 
         // JWT를 로컬 스토리지에 저장
         localStorage.setItem("token", token);
-        console.log(data);
         console.log("로그인 성공, JWT:", token);
 
         // 로그인 성공 후 리디렉션
         window.location.href = "/";
       } else {
         console.error("로그인 실패");
-        // 로그인 실패 시 추가 처리 (예: 에러 메시지 표시)
       }
     } catch (error) {
       console.error("서버 오류 발생", error);
     }
+  };
+
+  // 카카오 로그인 핸들러
+  const handleKakaoLogin = () => {
+    // 카카오 로그인 API 호출
+    window.Kakao.Auth.login({
+      success: (authObj) => {
+        console.log(authObj); // 인증 토큰 확인
+
+        // 백엔드에 카카오 로그인 토큰 전송
+        fetch("/web/api/login/kakao", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token: authObj.access_token }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // 로그인 성공 시 JWT를 저장하고 페이지 이동
+            const token = data.access_token;
+            localStorage.setItem("token", token);
+            // window.location.href = "/";
+          })
+          .catch((error) => {
+            console.error("카카오 로그인 오류 발생", error);
+          });
+      },
+      fail: (err) => {
+        console.error(err); // 로그인 실패 시 에러 로그 출력
+      },
+    });
   };
 
   return (
@@ -194,7 +224,8 @@ function Login() {
 
       <SsoText>소셜로그인으로 간편하게 가입하세요</SsoText>
       <SsoIcons>
-        <SsoIcon src="/kakao.png" alt="Kakao" />
+        {/* 카카오 로그인 버튼에 handleKakaoLogin 함수 연결 */}
+        <SsoIcon src="/kakao.png" alt="Kakao" onClick={handleKakaoLogin} />
         <SsoIcon src="/naver.png" alt="Naver" />
         <SsoIcon
           src="https://img.icons8.com/color/48/000000/google-logo.png"
