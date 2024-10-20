@@ -45,16 +45,28 @@ public class KakaoLoginController {
 
             // JSON 파싱 후 사용자 정보 저장
             JSONObject userInfo = new JSONObject(response.getBody());
-            String kakaoId = userInfo.getString("id");
-            String email = userInfo.getJSONObject("kakao_account").getString("email");
+
+            // 사용자 ID
+            long kakaoId = userInfo.getLong("id");
+
+            // 닉네임 가져오기 (properties에서)
+            String nickname = userInfo.getJSONObject("properties").getString("nickname");
+
+            // 닉네임 가져오기 (kakao_account.profile에서)
+            String profileNickname = userInfo.getJSONObject("kakao_account")
+                    .getJSONObject("profile")
+                    .getString("nickname");
+
+            log.info("User ID: {}, Nickname: {}, Profile Nickname: {}", kakaoId, nickname, profileNickname);
 
             // JWT 발급 로직 추가
-            String token = jwtUtil.generateToken(email); // JWT 발급
+            String token = jwtUtil.generateToken(nickname); // JWT 발급
 
             // JWT 토큰 반환
             return ResponseEntity.ok(new AuthResponse(token));
 
         } catch (Exception e) {
+            log.error("카카오 로그인 실패", e);
             // JSON 형식으로 에러 메시지 반환
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Collections.singletonMap("message", "카카오 로그인 실패"));

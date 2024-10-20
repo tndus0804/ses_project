@@ -1,4 +1,4 @@
-package com.sulomon.web.dto;
+package com.sulomon.pay.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

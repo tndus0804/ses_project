@@ -1,4 +1,4 @@
-package com.sulomon.web.entity;
+package com.sulomon.pay.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
