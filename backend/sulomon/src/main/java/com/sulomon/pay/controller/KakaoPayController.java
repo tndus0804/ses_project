@@ -32,9 +32,9 @@ public class KakaoPayController {
         params.put("quantity", "1");
         params.put("total_amount", "1000");  // 결제 금액
         params.put("tax_free_amount", "0");
-        params.put("approval_url", "http://localhost:3000/pay/success");  // 성공 시 리다이렉션 URI
-        params.put("cancel_url", "http://localhost:3000/pay/cancel");  // 취소 시 리다이렉션 URI
-        params.put("fail_url", "http://localhost:3000/pay/fail");  // 실패 시 리다이렉션 URI
+        params.put("approval_url", "http://localhost:3000/web/api/pay/success");  // 성공 시 리다이렉션 URI
+        params.put("cancel_url", "http://localhost:3000/web/api/pay/cancel");  // 취소 시 리다이렉션 URI
+        params.put("fail_url", "http://localhost:3000/web/api/pay/fail");  // 실패 시 리다이렉션 URI
 
         HttpEntity<Map<String, String>> request = new HttpEntity<>(params, headers);
         RestTemplate restTemplate = new RestTemplate();
