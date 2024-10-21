@@ -135,6 +135,7 @@ public class UserServiceImpl implements UserService {
                 .createdAt(userDTO.getCreatedAt())
                 .updatedAt(LocalDateTime.now())  // 계정 수정 시간은 현재 시각으로 설정
                 .status(userDTO.getStatus())
+                .isEmailVerified(true)
                 .build();
     }
 }
