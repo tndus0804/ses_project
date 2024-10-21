@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MyPageContainer from "./Components/MyPageContainer";
 import styled from "styled-components";
 
@@ -175,8 +175,7 @@ const WithdrawButton = styled(Button)`
     background-color: #e43a3a;
   }
 `;
-
-const DashBoard = ({ formData, handleChange, handleSubmit }) => {
+const DashBoard = ({ formData, handleChange, handleSubmit,userDelete }) => {
   return (
     <>
       <Title>회원정보 수정</Title>
@@ -184,7 +183,7 @@ const DashBoard = ({ formData, handleChange, handleSubmit }) => {
         {/* 아이디 */}
         <RowContainer>
           <Label>아이디</Label>
-          <DisabledInput type="text" name="userId" value="hong1" disabled />
+          <DisabledInput type="text" name="userId" value={formData.userId} disabled />
         </RowContainer>
 
         {/* 비밀번호 변경 */}
@@ -214,7 +213,7 @@ const DashBoard = ({ formData, handleChange, handleSubmit }) => {
         {/* 이름 */}
         <RowContainer>
           <Label>이름</Label>
-          <DisabledInput type="text" name="name" value="홍길동" disabled />
+          <DisabledInput type="text" name="name" value={formData.name} disabled />
         </RowContainer>
 
         {/* 생년월일 및 성별 */}
@@ -223,10 +222,10 @@ const DashBoard = ({ formData, handleChange, handleSubmit }) => {
           <BirthdayInput
             type="text"
             name="birthday"
-            value="2000.11.21"
+            value={formData.birthday}
             disabled
           />
-          <GenderInput type="text" name="gender" value="남성" disabled />
+          <GenderInput type="text" name="gender" value={formData.gender} disabled />
         </RowContainer>
 
         {/* 핸드폰 번호 변경 */}
@@ -263,7 +262,7 @@ const DashBoard = ({ formData, handleChange, handleSubmit }) => {
 
         {/* 회원 탈퇴 버튼 */}
         <DeleteContainer>
-          <WithdrawButton>회원 탈퇴</WithdrawButton>
+          <WithdrawButton type="button" onClick={userDelete}>회원 탈퇴</WithdrawButton>
         </DeleteContainer>
       </FormContainer>
     </>
@@ -271,25 +270,119 @@ const DashBoard = ({ formData, handleChange, handleSubmit }) => {
 };
 
 const EditProfile = () => {
+
+
   const [formData, setFormData] = React.useState({
     password: "",
     confirmPassword: "",
     address: "",
+    detailAddress: "",
     phone: "",
     email: "",
     mbti: "",
     interest: "",
   });
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      let requestData = {
+        token: localStorage.getItem("token")
+      }
+      try {
+        const response = await fetch("http://localhost:9996/web/current", {
+          method : "POST",
+          headers: {
+          'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData),
+          });
+
+        const data = await response.json();
+        console.log(`결과: ${JSON.stringify(data)}`)
+        setFormData(data);
+      } catch (error) {
+        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value); // 디버깅을 위해 추가
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+  
+    if (formData.password !== formData.confirmPassword) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+  
+    const updatedUser = {
+      userId: formData.userId,
+      password: formData.password ? formData.password : null,
+      email: formData.email,
+      mbti: formData.mbti,
+      interest: formData.interest,
+    };
+
+    try {
+      const response = await fetch("http://localhost:9996/web/update", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedUser),
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(errorMessage);
+      }
+
+      alert("회원정보가 성공적으로 수정되었습니다.");
+    } catch (error) {
+      console.error("회원정보 수정 중 오류 발생:", error);
+      alert(error.message);
+    }
   };
+  
+  
+// 회원 탈퇴 userDelete
+const userDelete = async () => {
+  let requestData = {
+    token: localStorage.getItem("token")
+  }
+
+  if (window.confirm("정말로 회원 탈퇴를 하시겠습니까?")) {
+    try {
+      const response = await fetch(`http://localhost:9996/web/delete`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData)
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(errorMessage);
+      }
+
+      alert("회원 탈퇴가 완료되었습니다.");
+      // 리다이렉트 처리
+    } catch (error) {
+      console.error("회원 탈퇴 중 오류 발생:", error);
+      alert(error.message);
+    }
+  }
+}
+
+  
 
   return (
     <MyPageContainer>
@@ -297,6 +390,7 @@ const EditProfile = () => {
         formData={formData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
+        userDelete={userDelete}
       />
     </MyPageContainer>
   );
