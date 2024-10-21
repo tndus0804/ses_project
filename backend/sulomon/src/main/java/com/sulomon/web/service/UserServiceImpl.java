@@ -50,6 +50,7 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public void updateUser(UserDTO updatedUser) {
+        verificationCodes.remove(updatedUser.getEmail());
         UserEntity existingUser = ur.findByUserId(updatedUser.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -57,7 +58,6 @@ public class UserServiceImpl implements UserService {
             existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword())); // 비밀번호 암호화
         }
         existingUser.setEmail(updatedUser.getEmail());
-        existingUser.setMbti(updatedUser.getMbti());
 //        existingUser.setInterests(updatedUser.getInterests());       
         
         ur.save(existingUser);
@@ -70,24 +70,10 @@ public class UserServiceImpl implements UserService {
         ur.delete(existingUser);
     }
 
-    @Override
-    public boolean passwordCheck(String username, String password) {
-        UserEntity user = ur.findByUserId(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        String userPassword = user.getPassword();
-        log.info("userPassword : ", userPassword);
-        return passwordEncoder.matches(password, userPassword);
-
-    }
     
     @Override
     public UserDTO getCurrentUser(String username) {
     	UserEntity userEntity = ur.findByUserId(username).orElse(null);
-        
-    	// 기존 new 키워드를 이용한 UserDTO 객체 생성
-//        if (userEntity != null) {
-//            return new UserDTO(userEntity.getId(), userEntity.getName(), userEntity.getEmail());
-//        }
     	
     	// lombok의 builder 방식을 이용한 UserDTO 객체 생성
     	UserDTO userDTO = UserDTO.builder()
@@ -97,7 +83,6 @@ public class UserServiceImpl implements UserService {
     			.birthday(userEntity.getBirthday())
     			.gender(userEntity.getGender())
     			.phoneNumber(userEntity.getPhoneNumber())
-    			.mbti(userEntity.getMbti())
 				.build();
         return userDTO;
     }
