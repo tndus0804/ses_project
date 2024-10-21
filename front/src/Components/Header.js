@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import MyPageMain from "../Page/MyPage/MyPageMain";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 // 스타일 정의
 const HeaderContainer = styled.header`
@@ -108,7 +110,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("token"); // 로컬 스토리지에서 JWT 삭제
     setIsLoggedIn(false); // 로그아웃 상태로 설정
-    window.location.href = "/loginForm"; // 로그인 페이지로 리디렉션
+    window.location.href = "/"; // 로그인 페이지로 리디렉션
   };
 
   return (
@@ -143,7 +145,9 @@ const Header = () => {
           {isLoggedIn ? (
             <>
               {/* 로그인 상태일 때 */}
-              <span>환영합니다!</span>
+              <span>
+                <a href="/mypageMain">마이 페이지</a>
+              </span>
               <button className="btn" onClick={handleLogout}>
                 로그아웃
               </button>

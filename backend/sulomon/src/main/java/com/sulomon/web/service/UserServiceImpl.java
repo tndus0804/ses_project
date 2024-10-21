@@ -94,6 +94,16 @@ public class UserServiceImpl implements UserService {
         return userDTO;
     }
 
+    @Override
+    public boolean passwordCheck(String username, String password) {
+        UserEntity user = ur.findByUserId(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        String userPassword = user.getPassword();
+        log.info("userPassword : ", userPassword);
+        return passwordEncoder.matches(password, userPassword);
+
+    }
+
     // UserDTO -> UserEntity 변환 메서드
     private UserEntity convertDtoToEntity(UserDTO userDTO) {
         return UserEntity.builder()

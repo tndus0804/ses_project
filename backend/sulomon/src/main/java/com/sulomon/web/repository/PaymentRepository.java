@@ -1,6 +1,6 @@
 package com.sulomon.web.repository;
 
-import com.sulomon.web.entity.PaymentEntity;
+import com.sulomon.pay.entity.PaymentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

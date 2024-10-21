@@ -40,6 +40,8 @@ CREATE TABLE IF NOT EXISTS `survey` (
     form_type   VARCHAR(20)   DEFAULT 'site_form'              COMMENT '폼 타입',
     points      INT           DEFAULT 0                        COMMENT '참여자에게 지급할 포인트',
     status      VARCHAR(20)   DEFAULT 'draft'                  COMMENT '설문조사 상태 (VARCHAR로 변경)',
+    startdate   TIMESTAMP(6)                                   COMMENT '설문조사 시작 시간',
+    enddate     TIMESTAMP(6)                                   COMMENT '설문조사 마감 시간',
     created_at  TIMESTAMP(6)  DEFAULT CURRENT_TIMESTAMP(6)     COMMENT '설문조사 생성 시간',
     updated_at  TIMESTAMP(6)  DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '설문조사 수정 시간',
     FOREIGN KEY (user_num)    REFERENCES `user`(user_num)      -- 'user 테이블의 user_num과 연결'

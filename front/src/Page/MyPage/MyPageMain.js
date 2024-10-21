@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import MyPageContainer from "./Components/MyPageContainer";
 import styled from "styled-components";
 
@@ -72,6 +73,39 @@ const Button = styled.button`
 `;
 
 const DashBoard = () => {
+  const [password, setPassword] = useState(""); // 비밀번호 상태 관리
+  const navigate = useNavigate();
+
+  // 비밀번호 인증 요청 함수
+  const handlePasswordSubmit = async () => {
+    let data = {
+      password: password,
+      token: localStorage.getItem("token"),
+    };
+    console.log(data);
+    try {
+      const response = await fetch("/web/verify-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data), // 비밀번호 데이터를 JSON으로 전송
+      });
+
+      if (response.ok) {
+        // 성공 처리
+        alert("비밀번호 인증 성공");
+        navigate("/editProfile");
+      } else {
+        // 실패 처리
+        alert("비밀번호 인증 실패");
+      }
+    } catch (error) {
+      console.error("비밀번호 인증 오류", error);
+      alert("서버 오류 발생");
+    }
+  };
+
   return (
     <Container>
       <Text>
@@ -80,10 +114,16 @@ const DashBoard = () => {
       <FormContainer>
         <div>
           <Label>비밀번호 인증</Label>
-          <Input type="password" placeholder="비밀번호 입력" />
+          <Input
+            type="password"
+            placeholder="비밀번호 입력"
+            value={password} // 상태와 연결
+            onChange={(e) => setPassword(e.target.value)} // 입력 시 상태 업데이트
+          />
         </div>
         <div>
-          <Button>확인</Button>
+          <Button onClick={handlePasswordSubmit}>확인</Button>{" "}
+          {/* 클릭 시 핸들러 호출 */}
         </div>
       </FormContainer>
     </Container>

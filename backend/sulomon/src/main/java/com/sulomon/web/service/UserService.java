@@ -16,3 +16,4 @@ public interface UserService {
     
     UserDTO getCurrentUser(String username);
 }
+
