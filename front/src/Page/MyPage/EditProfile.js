@@ -210,31 +210,6 @@ const DashBoard = ({ formData, handleChange, handleSubmit,userDelete }) => {
           />
         </RowContainer>
 
-        {/* 주소 변경 */}
-        <RowContainer>
-          <Label>주소</Label>
-          <AddressInput
-            type="text"
-            name="address"
-            placeholder="주소 입력"
-            value={formData.address}
-            onChange={handleChange}
-            disabled
-          />
-          <AuthButton>주소 검색</AuthButton>
-        </RowContainer>
-        {/* 주소 변경 */}
-        <RowContainer>
-          <Label>상세 주소</Label>
-          <Input
-            type="text"
-            name="detailAddress"
-            placeholder="주소 입력"
-            value={formData.detailAddress}
-            onChange={handleChange}
-          />
-        </RowContainer>
-
         {/* 이름 */}
         <RowContainer>
           <Label>이름</Label>
@@ -275,30 +250,6 @@ const DashBoard = ({ formData, handleChange, handleSubmit,userDelete }) => {
             name="email"
             placeholder="abc@domain.com"
             value={formData.email}
-            onChange={handleChange}
-          />
-        </RowContainer>
-
-        {/* MBTI */}
-        <RowContainer>
-          <Label>MBTI</Label>
-          <Input
-            type="text"
-            name="mbti"
-            placeholder="ENFP"
-            value={formData.mbti}
-            onChange={handleChange}
-          />
-        </RowContainer>
-
-        {/* 관심사 */}
-        <RowContainer>
-          <Label>관심사</Label>
-          <Input
-            type="text"
-            name="interest"
-            placeholder="운동, 여행"
-            value={formData.interest}
             onChange={handleChange}
           />
         </RowContainer>

@@ -13,7 +13,14 @@ public interface UserService {
     void deleteUser(String username);
 
     boolean passwordCheck(String username, String password);
-    
-    UserDTO getCurrentUser(String username);
+  
+    String generateVerificationCode();
+
+    boolean verifyEmailCode(String email, String inputCode);
+
+    void storeVerificationCode(String email, String verificationCode);
+
+  UserDTO getCurrentUser(String username);
+
 }
 

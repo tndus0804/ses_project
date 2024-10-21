@@ -5,7 +5,7 @@ const LIST = Object.freeze({
   surveys: "내가 만든 설문조사",
   point: "포인트 내역",
   payment: "결제 내역",
-  gifticons: "기프티콘 구매",
+  cash: "기프티콘 구매",
 });
 
 export default LIST;

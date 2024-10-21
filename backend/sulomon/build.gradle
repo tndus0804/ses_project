@@ -51,6 +51,11 @@ dependencies {
 
 	// 카카오 JSON 파싱
 	implementation 'org.json:json:20210307'
+
+	// 메일 인증
+	implementation 'com.sun.mail:jakarta.mail:2.0.1'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.jetbrains.kotlin:kotlin-test'

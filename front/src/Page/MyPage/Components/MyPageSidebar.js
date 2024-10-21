@@ -69,8 +69,7 @@ const SidebarItem = styled(NavLink)`
 `;
 // title 수정 필요
 const Sidebar = () => {
-  const { title, edit, participation, surveys, point, payment, gifticons } =
-    LIST;
+  const { title, edit, participation, surveys, point, payment, cash } = LIST;
   return (
     <SidebarContainer>
       <SidebarTitle>{title}</SidebarTitle>
@@ -106,10 +105,10 @@ const Sidebar = () => {
           {payment}
         </SidebarItem>
         <SidebarItem
-          to="/gifticons"
+          to="/cash"
           className={({ isActive }) => (isActive ? "active" : "")}
         >
-          {gifticons}
+          {cash}
         </SidebarItem>
       </SidebarBox>
     </SidebarContainer>

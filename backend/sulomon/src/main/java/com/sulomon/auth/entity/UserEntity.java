@@ -66,21 +66,17 @@ public class UserEntity {
     @Column(name = "role", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'user'")
     private String role;
 
-    // 사용자 주소 (VARCHAR 255)
-    @Column(name = "address")
-    private String address;
-
     // 전화번호 (VARCHAR 30)
     @Column(name = "phone_number", length = 30)
     private String phoneNumber;
 
-    // MBTI (CHAR 4)
-    @Column(name = "mbti", length = 4)
-    private String mbti;
-
     // 포인트 (INT, NOT NULL, DEFAULT 0)
     @Column(name = "points", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer points;
+
+    // 이메일 인증 여부 (BOOLEAN, NOT NULL, DEFAULT false)
+    @Column(name = "is_email_verified", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean isEmailVerified;
 
     // 계정 생성 시간 (DATETIME, 최초 생성 시에만 설정되고 이후 수정 불가)
     @Column(name = "created_at", updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
@@ -99,6 +95,7 @@ public class UserEntity {
         if(role == null) this.role = "user";
         this.createdAt = LocalDateTime.now(); // 처음 저장할 때 생성 시간 설정
         if(status == null) this.status = "active"; // 상태
+        if (!this.isEmailVerified) this.isEmailVerified = false;
     }
     @PreUpdate
     public void preUpdate() {

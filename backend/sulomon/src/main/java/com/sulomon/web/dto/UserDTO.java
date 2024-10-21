@@ -30,4 +30,5 @@ public class UserDTO {
     private LocalDateTime createdAt;  // 계정 생성 시간
     private LocalDateTime updatedAt;  // 계정 수정 시간
     private String status;        // 계정 상태
+    private boolean isEmailVerified;  // 이메일 인증 여부
 }

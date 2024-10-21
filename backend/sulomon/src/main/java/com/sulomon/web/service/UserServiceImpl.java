@@ -3,7 +3,6 @@ package com.sulomon.web.service;
 import com.sulomon.web.dto.UserDTO;
 import com.sulomon.auth.entity.UserEntity;
 import com.sulomon.web.repository.UserRepository;
-import com.sulomon.web.security.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 @Service
 @Slf4j
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
     // 암호화
     private final PasswordEncoder passwordEncoder;
 
+    // 임시 저장
+    private final Map<String, String> verificationCodes = new HashMap<>();
+
     @Override
     public boolean idCheck(String searchId) {
         return !ur.existsByUserId(searchId);
@@ -31,6 +35,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void join(UserDTO userDTO) {
         // UserDTO -> UserEntity 변환
+
+        // 인증 성공 후 인증 코드 삭제 (중복 사용 방지)
+        verificationCodes.remove(userDTO.getEmail());
+
         UserEntity userEntity = convertDtoToEntity(userDTO);
         log.info("UserEntity 정보: {}", userEntity);
 
@@ -104,6 +112,27 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    // 이메일 인증 코드 생성
+    public String generateVerificationCode() {
+        Random random = new Random();
+        return String.format("%06d", random.nextInt(999999)); // 6자리 숫자 생성
+    }
+
+    // 인증 코드 검증
+    @Override
+    public boolean verifyEmailCode(String email, String inputCode) {
+        String storedCode = verificationCodes.get(email);
+        if (storedCode != null && storedCode.equals(inputCode)) {
+            return true;
+        }
+        return false;
+    }
+
+    // 이메일 인증 코드 저장
+    public void storeVerificationCode(String email, String code) {
+        verificationCodes.put(email, code);
+    }
+
     // UserDTO -> UserEntity 변환 메서드
     private UserEntity convertDtoToEntity(UserDTO userDTO) {
         return UserEntity.builder()
@@ -116,9 +145,7 @@ public class UserServiceImpl implements UserService {
                 .gender(userDTO.getGender())
                 .socialLogin(userDTO.isSocialLogin())
                 .role(userDTO.getRole())
-                .address(userDTO.getAddress())
                 .phoneNumber(userDTO.getPhoneNumber())
-                .mbti(userDTO.getMbti())
                 .points(userDTO.getPoints())
                 .createdAt(userDTO.getCreatedAt())
                 .updatedAt(LocalDateTime.now())  // 계정 수정 시간은 현재 시각으로 설정

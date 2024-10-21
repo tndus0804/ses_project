@@ -64,6 +64,22 @@ const ButtonContainer = styled.div`
   margin-top: 20px;
 `;
 
+const MailButton = styled.button`
+  width: 100%;
+  max-width: 100px;
+  background-color: #ff8c00;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 45px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 20px;
+  &:hover {
+    background-color: #e07c00;
+  }
+`;
+
 const Button = styled.button`
   width: 100%;
   max-width: 100px;
@@ -81,18 +97,22 @@ const Button = styled.button`
 
 const Signup = () => {
   const [form, setForm] = useState({
-    userId: "", // 사용자 아이디
-    password: "", // 비밀번호
-    confirmPassword: "", // 비밀번호 확인
-    address: "", // 주소
-    name: "", // 이름
-    birthday: "", // 생년월일 (YYYY-MM-DD 형태로 입력)
-    gender: "", // 성별 (MALE, FEMALE, OTHER)
-    phoneNumber: "", // 전화번호
-    email: "", // 이메일 주소 앞 부분
-    emailDomain: "", // 이메일 주소 뒷 부분 (도메인)
-    mbti: "", // MBTI
+    userId: "",
+    password: "",
+    confirmPassword: "",
+    address: "",
+    name: "",
+    birthday: "",
+    gender: "",
+    phoneNumber: "",
+    email: "",
+    emailDomain: "",
+    mbti: "",
+    verificationCode: "", // 추가된 필드
   });
+
+  const [error, setError] = useState("");
+  const [verificationStatus, setVerificationStatus] = useState(false); // 인증 상태
 
   // 입력값 변경 핸들러
   const handleChange = (e) => {
@@ -103,41 +123,80 @@ const Signup = () => {
     }));
   };
 
-  const [error, setError] = useState("");
+  // 이메일 인증 요청 함수
+  const handleEmailVerification = async () => {
+    const fullEmail = `${form.email}@${form.emailDomain}`;
+    try {
+      const response = await fetch("/web/send-verification-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: fullEmail }),
+      });
 
-  const handleIdCheck = () => {
-    // 팝업창을 띄움
-    // const popupWindow = window.open(
-    //   "/idCheck",
-    //   "아이디 중복 확인",
-    //   "width=500,height=300"
-    // );
+      if (response.ok) {
+        console.log("인증 코드가 전송되었습니다.");
+      } else {
+        console.error("인증 코드 전송 실패");
+      }
+    } catch (error) {
+      console.error("서버 오류", error);
+    }
+  };
+
+  // 인증 코드 확인 함수
+  const handleCodeVerification = async () => {
+    const fullEmail = `${form.email}@${form.emailDomain}`;
+    try {
+      const response = await fetch("/web/verify-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: fullEmail,
+          verificationCode: form.verificationCode,
+        }),
+      });
+
+      if (response.ok) {
+        console.log("이메일 인증 성공");
+        setVerificationStatus(true); // 인증 성공
+      } else {
+        console.error("이메일 인증 실패");
+        setVerificationStatus(false); // 인증 실패
+      }
+    } catch (error) {
+      console.error("서버 오류", error);
+      setVerificationStatus(false); // 인증 실패
+    }
   };
 
   // 폼 제출 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 비밀번호 확인
     if (form.password !== form.confirmPassword) {
       setError("비밀번호가 일치하지 않습니다.");
-      return; // 비밀번호가 일치하지 않으면 제출 중단
+      return;
     }
 
-    // email과 emailDomain을 결합하여 full email 만들기
-    const fullEmail = `${form.email}@${form.emailDomain}`;
+    if (!verificationStatus) {
+      setError("이메일 인증을 완료해주세요.");
+      return;
+    }
 
-    // 백엔드로 전송할 signupData
+    const fullEmail = `${form.email}@${form.emailDomain}`;
     const signupData = {
       userId: form.userId,
       password: form.password,
-      address: form.address,
       name: form.name,
       birthday: form.birthday,
       gender: form.gender,
       phoneNumber: form.phoneNumber,
-      email: fullEmail, // email과 emailDomain 결합
-      mbti: form.mbti,
+      email: fullEmail,
+      verificationCode: form.verificationCode,
     };
 
     console.log("폼 제출 데이터:", signupData);
@@ -148,24 +207,22 @@ const Signup = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(signupData), // 폼 데이터를 JSON 형식으로 변환하여 전송
+        body: JSON.stringify(signupData),
       });
 
       if (response.ok) {
         console.log("회원가입 성공");
-        // 회원가입 성공 후 폼 초기화
         setForm({
           userId: "",
           password: "",
           confirmPassword: "",
-          address: "",
           name: "",
           birthday: "",
           gender: "",
           phoneNumber: "",
           email: "",
           emailDomain: "",
-          mbti: "",
+          verificationCode: "", // 폼 초기화
         });
       } else {
         console.error("회원가입 실패");
@@ -186,7 +243,6 @@ const Signup = () => {
             name="userId"
             value={form.userId}
             onChange={handleChange}
-            // onClick={handleIdCheck}
             required
           />
         </Label>
@@ -210,16 +266,6 @@ const Signup = () => {
             value={form.confirmPassword}
             onChange={handleChange}
             required
-          />
-        </Label>
-
-        <Label>
-          <LabelText>주소</LabelText>
-          <Input
-            type="text"
-            name="address"
-            value={form.address}
-            onChange={handleChange}
           />
         </Label>
 
@@ -281,29 +327,24 @@ const Signup = () => {
             <option value="gmail.com">gmail.com</option>
             <option value="daum.net">daum.net</option>
           </Select>
+          <MailButton type="button" onClick={handleEmailVerification}>
+            인증
+          </MailButton>
         </Label>
 
+        {/* 이메일 인증 코드 입력 */}
         <Label>
-          <LabelText>MBTI</LabelText>
-          <Select name="mbti" value={form.mbti} onChange={handleChange}>
-            <option value="">선택</option>
-            <option value="ISTJ">ISTJ</option>
-            <option value="ISFJ">ISFJ</option>
-            <option value="INFJ">INFJ</option>
-            <option value="INTJ">INTJ</option>
-            <option value="ISTP">ISTP</option>
-            <option value="ISFP">ISFP</option>
-            <option value="INFP">INFP</option>
-            <option value="INTP">INTP</option>
-            <option value="ESTP">ESTP</option>
-            <option value="ESFP">ESFP</option>
-            <option value="ENFP">ENFP</option>
-            <option value="ENTP">ENTP</option>
-            <option value="ESTJ">ESTJ</option>
-            <option value="ESFJ">ESFJ</option>
-            <option value="ENFJ">ENFJ</option>
-            <option value="ENTJ">ENTJ</option>
-          </Select>
+          <LabelText>인증 코드</LabelText>
+          <Input
+            type="text"
+            name="verificationCode"
+            value={form.verificationCode}
+            onChange={handleChange}
+            placeholder="인증 코드 입력"
+          />
+          <MailButton type="button" onClick={handleCodeVerification}>
+            확인
+          </MailButton>
         </Label>
 
         <ButtonContainer>

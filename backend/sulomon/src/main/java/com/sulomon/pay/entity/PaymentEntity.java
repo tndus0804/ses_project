@@ -1,10 +1,15 @@
 package com.sulomon.pay.entity;
 
+import com.sulomon.auth.entity.UserEntity;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -28,6 +33,11 @@ public class PaymentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id")
     private Integer paymentId;
+
+    // 결제한 사용자 (users 테이블과 연관, ManyToOne, 지연 로딩)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_num", nullable = false)
+    private UserEntity user;
 
     // 결제 금액 (BigDecimal 타입, NOT NULL, 소수점 두 자리까지 허용)
     @Column(name = "amount", nullable = false, precision = 10, scale = 2)
