@@ -11,7 +11,7 @@ import Participation from "./Page/MyPage/Participation";
 import MySurveys from "./Page/MyPage/MySurveys";
 import PointHistory from "./Page/MyPage/PointHistory";
 import PaymentHistory from "./Page/MyPage/PaymentHistory";
-import Gifticons from "./Page/Pay/Gifticon";
+import Cash from "./Page/MyPage/Cash";
 import GlobalFontStyle from "./Components/GlobalFontStyle";
 import Header from "./Components/Header";
 import FindID from "./Page/User/FindID";
@@ -39,35 +39,6 @@ const App = () => {
       <Header />
       <GlobalFontStyle />
       <div>
-        <nav>
-          <ul>
-            {/* <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/login">로그인</Link>
-            </li>
-            <li>
-              <Link to="/signUp">회원 가입</Link>
-            </li> */}
-            <li>
-              <Link to="/mypageMain">마이 페이지</Link>
-            </li>
-            {/* <li>
-              <Link to="/notice">공지사항</Link>
-            </li>
-            <li>
-              <Link to="/surveySelect">설문 선택</Link>
-            </li>
-            <li>
-              <Link to="/surveyList">설문 게시판</Link>
-            </li> */}
-            <li>
-              <Link to="/editProfile">회원정보 수정</Link>
-            </li>
-          </ul>
-        </nav>
-
         <Routes basename="/web">
           <Route path="/" element={<MainPage />} />
           {/* 회원가입 / 로그인 */}
@@ -83,8 +54,8 @@ const App = () => {
           <Route path="/mySurveys" element={<MySurveys />} />
           <Route path="/pointHistory" element={<PointHistory />} />
           <Route path="/paymentHistory" element={<PaymentHistory />} />
-          <Route path="/gifticons" element={<Gifticons />} />
           <Route path="/surveySelect" element={<SurveySelect />} />
+          <Route path="/cash" element={<Cash />} />
           {/* 공지사항 */}
           <Route path="/NoticeList" element={<NoticeList />} />
           <Route
