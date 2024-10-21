@@ -3,6 +3,7 @@ package com.sulomon.web.service;
 import com.sulomon.web.dto.UserDTO;
 import com.sulomon.auth.entity.UserEntity;
 import com.sulomon.web.repository.UserRepository;
+import com.sulomon.web.security.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -35,6 +37,61 @@ public class UserServiceImpl implements UserService {
         // 데이터베이스에 저장
         ur.save(userEntity);
         log.info("회원가입 성공 아이디: {}", userDTO.getUserId());
+    }
+    
+    
+    @Override
+    public void updateUser(UserDTO updatedUser) {
+        UserEntity existingUser = ur.findByUserId(updatedUser.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (updatedUser.getPassword() != null) {
+            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword())); // 비밀번호 암호화
+        }
+        existingUser.setEmail(updatedUser.getEmail());
+        existingUser.setMbti(updatedUser.getMbti());
+//        existingUser.setInterests(updatedUser.getInterests());       
+        
+        ur.save(existingUser);
+    }
+
+    @Override
+    public void deleteUser(String username) {
+        UserEntity existingUser = ur.findByUserId(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        ur.delete(existingUser);
+    }
+
+    @Override
+    public boolean passwordCheck(String username, String password) {
+        UserEntity user = ur.findByUserId(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        String userPassword = user.getPassword();
+        log.info("userPassword : ", userPassword);
+        return passwordEncoder.matches(password, userPassword);
+
+    }
+    
+    @Override
+    public UserDTO getCurrentUser(String username) {
+    	UserEntity userEntity = ur.findByUserId(username).orElse(null);
+        
+    	// 기존 new 키워드를 이용한 UserDTO 객체 생성
+//        if (userEntity != null) {
+//            return new UserDTO(userEntity.getId(), userEntity.getName(), userEntity.getEmail());
+//        }
+    	
+    	// lombok의 builder 방식을 이용한 UserDTO 객체 생성
+    	UserDTO userDTO = UserDTO.builder()
+    			.userId(username)
+    			.email(userEntity.getEmail())
+    			.name(userEntity.getName())
+    			.birthday(userEntity.getBirthday())
+    			.gender(userEntity.getGender())
+    			.phoneNumber(userEntity.getPhoneNumber())
+    			.mbti(userEntity.getMbti())
+				.build();
+        return userDTO;
     }
 
     // UserDTO -> UserEntity 변환 메서드
