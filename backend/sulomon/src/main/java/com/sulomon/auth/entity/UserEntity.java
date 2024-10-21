@@ -66,17 +66,9 @@ public class UserEntity {
     @Column(name = "role", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'user'")
     private String role;
 
-    // 사용자 주소 (VARCHAR 255)
-    @Column(name = "address")
-    private String address;
-
     // 전화번호 (VARCHAR 30)
     @Column(name = "phone_number", length = 30)
     private String phoneNumber;
-
-    // MBTI (CHAR 4)
-    @Column(name = "mbti", length = 4)
-    private String mbti;
 
     // 포인트 (INT, NOT NULL, DEFAULT 0)
     @Column(name = "points", nullable = false, columnDefinition = "INT DEFAULT 0")

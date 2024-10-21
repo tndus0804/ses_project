@@ -79,9 +79,7 @@ public final class AuthenticationDto {
             LocalDate birthday,
 
             String gender,
-            String address,
-            String phoneNumber,
-            String mbti
+            String phoneNumber
     ) {}
 
     @Builder
