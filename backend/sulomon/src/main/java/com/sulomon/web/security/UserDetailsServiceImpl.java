@@ -25,7 +25,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("아이디를 찾을 수 없습니다: " + userId));
 
         log.debug("조회된 사용자 정보: {}", userEntity);
-
+        if (!userEntity.isEmailVerified()) {
+            throw new UsernameNotFoundException("이메일 인증이 완료되지 않았습니다: " + userId);
+        }
         // UserEntity를 AuthenticatedUser로 변환하여 반환
         AuthenticatedUser authenticatedUser = AuthenticatedUser.builder()
                 .userId(userEntity.getUserId()) // userId

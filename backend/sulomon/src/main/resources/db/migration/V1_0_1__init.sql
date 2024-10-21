@@ -13,11 +13,9 @@ CREATE TABLE IF NOT EXISTS `user` (
     gender      VARCHAR(10)                                     COMMENT '성별',
     social_login BOOLEAN        DEFAULT FALSE                   COMMENT '소셜 로그인 여부',
     role        VARCHAR(30)     DEFAULT 'user'                  COMMENT '사용자 역할',
-
+    is_email_verified BOOLEAN   DEFAULT FALSE                   COMMENT '이메일 인증 여부',
     -- 수정 가능한 유저 정보
-    address     VARCHAR(255)                                    COMMENT '사용자 주소',
     phone_number VARCHAR(30)                                    COMMENT '사용자 전화번호',
-    mbti        CHAR(4)                                         COMMENT 'MBTI 성격 유형',
     
     -- 포인트 정보
     points      INT             DEFAULT 0                       COMMENT '유저의 초기 포인트는 0',
@@ -28,6 +26,16 @@ CREATE TABLE IF NOT EXISTS `user` (
     status      VARCHAR(30)     DEFAULT 'PENDING'               COMMENT '계정 상태'
 );
 
+-- 이메일 인증 테이블
+CREATE TABLE IF NOT EXISTS `email_verification` (
+    verification_id   INT AUTO_INCREMENT PRIMARY KEY  COMMENT '이메일 인증 고유 ID',
+    user_num          BINARY(16)                      COMMENT '인증한 사용자 번호 (users 테이블과 연결)',
+    verification_code VARCHAR(255) NOT NULL           COMMENT '인증 코드',
+    is_verified       BOOLEAN DEFAULT FALSE           COMMENT '인증 완료 여부',
+    expiration_time   TIMESTAMP(6)                    COMMENT '인증 코드 만료 시간',
+    created_at        TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '인증 요청 시간',
+    FOREIGN KEY (user_num) REFERENCES `user`(user_num) ON DELETE CASCADE -- '유저 삭제 시 연관된 인증 정보도 삭제'
+);
 
 -- 설문조사 관련 테이블
 
@@ -39,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `survey` (
     description TEXT                                           COMMENT '설문조사 내용',
     form_type   VARCHAR(20)   DEFAULT 'site_form'              COMMENT '폼 타입',
     points      INT           DEFAULT 0                        COMMENT '참여자에게 지급할 포인트',
+    participants INT          DEFAULT 0                        COMMENT '설문조사에 참여한 인원',
     status      VARCHAR(20)   DEFAULT 'draft'                  COMMENT '설문조사 상태 (VARCHAR로 변경)',
     startdate   TIMESTAMP(6)                                   COMMENT '설문조사 시작 시간',
     enddate     TIMESTAMP(6)                                   COMMENT '설문조사 마감 시간',
@@ -102,18 +111,6 @@ CREATE TABLE IF NOT EXISTS `payment` (
     FOREIGN KEY (user_num)          REFERENCES `user`(user_num) -- 'users 테이블의 user_num을 참조하는 외래 키'
 );
 
--- 기프티콘 테이블
-CREATE TABLE IF NOT EXISTS `gifticon` (
-    gifticon_id     INT             AUTO_INCREMENT PRIMARY KEY  COMMENT '기프티콘 고유 ID',
-    user_num        BINARY(16)                                  COMMENT '기프티콘 구매자 번호 (users 테이블과 연결)',
-    phone_number    VARCHAR(30)                                 COMMENT '기프티콘 전송할 전화번호',
-    gifticon_type   VARCHAR(50)                                 COMMENT '기프티콘 종류',
-    amount          DECIMAL(10, 2)                              COMMENT '기프티콘 금액',
-    status          VARCHAR(10)     DEFAULT 'pending'           COMMENT '기프티콘 상태',
-    created_at      TIMESTAMP(6)    DEFAULT CURRENT_TIMESTAMP(6) COMMENT '기프티콘 구매 시간',
-    FOREIGN KEY (user_num)          REFERENCES `user`(user_num) -- 'users 테이블의 user_num을 참조하는 외래 키'
-);
-
 -- 포인트 인출 요청 테이블 (은행명 및 계좌번호 추가, 금액 제약 조건 포함)
 CREATE TABLE IF NOT EXISTS `point_withdrawal_request` (
     withdrawal_id   INT             AUTO_INCREMENT PRIMARY KEY  COMMENT '인출 요청 고유 ID',
@@ -137,8 +134,6 @@ CREATE TABLE IF NOT EXISTS `notice` (
     updated_at      TIMESTAMP(6)    DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '공지사항 수정 시간',
     FOREIGN KEY (admin_num)         REFERENCES `user`(user_num) -- 'users 테이블의 user_num을 참조하는 외래 키'
 );
-
-
 
 -- 댓글 관련 테이블
 CREATE TABLE IF NOT EXISTS `comment` (

@@ -82,6 +82,10 @@ public class UserEntity {
     @Column(name = "points", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer points;
 
+    // 이메일 인증 여부 (BOOLEAN, NOT NULL, DEFAULT false)
+    @Column(name = "is_email_verified", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean isEmailVerified;
+
     // 계정 생성 시간 (DATETIME, 최초 생성 시에만 설정되고 이후 수정 불가)
     @Column(name = "created_at", updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
