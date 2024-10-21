@@ -95,6 +95,7 @@ public class UserEntity {
         if(role == null) this.role = "user";
         this.createdAt = LocalDateTime.now(); // 처음 저장할 때 생성 시간 설정
         if(status == null) this.status = "active"; // 상태
+        if (!this.isEmailVerified) this.isEmailVerified = false;
     }
     @PreUpdate
     public void preUpdate() {

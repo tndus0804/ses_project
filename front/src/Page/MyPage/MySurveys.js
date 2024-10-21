@@ -1,26 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import MyPageContainer from "./Components/MyPageContainer";
 import styled from "styled-components";
 
 // 제목(fix)
 const Title = styled.h2`
   width: 1100px;
+  // padding-bottom: 15px;
+  display: -webkit-inline-box;
   font-weight: lighter;
 `;
 
 const Container = styled.div`
   width: 100%;
   max-width: 1100px;
+  margin: 0 auto; /* 화면 중앙 정렬 */
+  overflow-x: auto; /* 작은 화면에서 테이블이 넘치면 스크롤 생성 */
 `;
 
-// 테이블 스타일
 const Table = styled.table`
   border-top: 2px solid #f5a623;
-  width: 1000px;
-  max-width: 1100px;
+  width: 100%;
+  max-width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
-  display: inline-table;
+  display: compact; /* 작은 화면에서 스크롤 가능하게 만듦 */
+  overflow-x: auto;
 `;
 
 const TableHeader = styled.th`
@@ -43,6 +47,7 @@ const TableCell = styled.td`
   padding: 10px;
   text-align: center;
   border-bottom: 2px dotted #f5a623;
+  word-wrap: break-word; /* 내용이 너무 길 경우 줄바꿈 */
 `;
 
 const ButtonCell = styled.td`
@@ -65,22 +70,48 @@ const ActionButton = styled.button`
   }
 `;
 
+// 페이지네이션 스타일
+const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const PageNumber = styled.button`
+  background-color: transparent;
+  border: none;
+  margin: 10px 16px 0 0px;
+  cursor: pointer;
+  font-size: 18px;
+  &:hover {
+    font-weight: bold;
+    color: #f5a623;
+  }
+`;
+
 const DashBoard = () => {
-  // 더미 데이터
-  const surveyData = [
-    {
-      id: 1,
-      title: "OO 만족도 조사",
-      period: "2024-09-01 ~ 2024-10-01",
-      members: "12/50",
-    },
-    {
-      id: 2,
-      title: "하반기 행사 설문 조사",
-      period: "2024-09-01 ~ 2024-10-01",
-      members: "12/50",
-    },
-  ];
+  const [surveyData, setSurveyData] = useState([]); // 설문 데이터를 저장할 state
+
+  // 설문 데이터를 가져오는 함수
+  const fetchSurveys = async () => {
+    try {
+      const response = await fetch("/web/api/mysurveys", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // JWT 토큰을 헤더에 추가
+        },
+      });
+      const data = await response.json();
+      setSurveyData(data); // 데이터를 state에 저장
+    } catch (error) {
+      console.error("설문 데이터를 가져오는 중 오류 발생:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSurveys(); // 컴포넌트가 마운트될 때 설문 데이터를 가져옴
+  }, []);
 
   // 결제 요청 함수
   const handlePayment = async (surveyId) => {
@@ -124,13 +155,19 @@ const DashBoard = () => {
         </thead>
         <tbody>
           {surveyData.map((survey, index) => (
-            <TableRow key={survey.id}>
+            <TableRow key={survey.surveyId}>
+              {" "}
+              {/* survey.surveyId를 사용하여 고유한 값을 보장 */}
               <TableCell>{index + 1}</TableCell>
               <TableCell>{survey.title}</TableCell>
-              <TableCell>{survey.period}</TableCell>
-              <TableCell>{survey.members}</TableCell>
+              <TableCell>
+                {/* 날짜 형식화 */}
+                {new Date(survey.startDate).toLocaleDateString()} -{" "}
+                {new Date(survey.endDate).toLocaleDateString()}
+              </TableCell>
+              <TableCell>{survey.participants}</TableCell>
               <ButtonCell>
-                <ActionButton onClick={() => handlePayment(survey.id)}>
+                <ActionButton onClick={() => handlePayment(survey.surveyId)}>
                   결제
                 </ActionButton>
                 <ActionButton>내보내기</ActionButton>
@@ -139,6 +176,15 @@ const DashBoard = () => {
           ))}
         </tbody>
       </Table>
+      <Pagination>
+        <PageNumber>◀</PageNumber>
+        <PageNumber>1</PageNumber>
+        <PageNumber>2</PageNumber>
+        <PageNumber>3</PageNumber>
+        <PageNumber>4</PageNumber>
+        <PageNumber>5</PageNumber>
+        <PageNumber>▶</PageNumber>
+      </Pagination>
     </Container>
   );
 };

@@ -54,9 +54,21 @@ public class SurveyEntity {
     @Column(name = "points", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer points; // 참여자에게 지급할 포인트
 
+    // 참여자에게 지급할 포인트 (기본값 0)
+    @Column(name = "participants", nullable = false, columnDefinition = "INT DEFAULT 0")
+    private Integer participants; // 참여자에게 지급할 포인트
+
     // 설문조사 상태 (VARCHAR 20, 기본값 'draft')
     @Column(name = "status", length = 20, nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'active'")
     private String status; // 설문 상태 (draft, active, completed, closed, deleted)
+
+    // 설문조사 생성 시간 (DATETIME, NOT NULL, 업데이트 불가)
+    @Column(name = "startdate", nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime startDate; // 설문조사 생성 시간
+
+    // 설문조사 생성 시간 (DATETIME, NOT NULL, 업데이트 불가)
+    @Column(name = "enddate", nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime endDate; // 설문조사 생성 시간
 
     // 설문조사 생성 시간 (DATETIME, NOT NULL, 업데이트 불가)
     @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
