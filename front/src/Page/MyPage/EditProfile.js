@@ -175,7 +175,7 @@ const WithdrawButton = styled(Button)`
     background-color: #e43a3a;
   }
 `;
-const DashBoard = ({ formData, handleChange, handleSubmit,userDelete }) => {
+const DashBoard = ({ formData, handleChange, handleSubmit, userDelete }) => {
   return (
     <>
       <Title>회원정보 수정</Title>
@@ -183,7 +183,12 @@ const DashBoard = ({ formData, handleChange, handleSubmit,userDelete }) => {
         {/* 아이디 */}
         <RowContainer>
           <Label>아이디</Label>
-          <DisabledInput type="text" name="userId" value={formData.userId} disabled />
+          <DisabledInput
+            type="text"
+            name="userId"
+            value={formData.userId}
+            disabled
+          />
         </RowContainer>
 
         {/* 비밀번호 변경 */}
@@ -213,7 +218,12 @@ const DashBoard = ({ formData, handleChange, handleSubmit,userDelete }) => {
         {/* 이름 */}
         <RowContainer>
           <Label>이름</Label>
-          <DisabledInput type="text" name="name" value={formData.name} disabled />
+          <DisabledInput
+            type="text"
+            name="name"
+            value={formData.name}
+            disabled
+          />
         </RowContainer>
 
         {/* 생년월일 및 성별 */}
@@ -225,7 +235,12 @@ const DashBoard = ({ formData, handleChange, handleSubmit,userDelete }) => {
             value={formData.birthday}
             disabled
           />
-          <GenderInput type="text" name="gender" value={formData.gender} disabled />
+          <GenderInput
+            type="text"
+            name="gender"
+            value={formData.gender}
+            disabled
+          />
         </RowContainer>
 
         {/* 핸드폰 번호 변경 */}
@@ -262,7 +277,9 @@ const DashBoard = ({ formData, handleChange, handleSubmit,userDelete }) => {
 
         {/* 회원 탈퇴 버튼 */}
         <DeleteContainer>
-          <WithdrawButton type="button" onClick={userDelete}>회원 탈퇴</WithdrawButton>
+          <WithdrawButton type="button" onClick={userDelete}>
+            회원 탈퇴
+          </WithdrawButton>
         </DeleteContainer>
       </FormContainer>
     </>
@@ -270,35 +287,29 @@ const DashBoard = ({ formData, handleChange, handleSubmit,userDelete }) => {
 };
 
 const EditProfile = () => {
-
-
   const [formData, setFormData] = React.useState({
     password: "",
     confirmPassword: "",
-    address: "",
-    detailAddress: "",
     phone: "",
     email: "",
-    mbti: "",
-    interest: "",
   });
 
   useEffect(() => {
     const fetchUserData = async () => {
       let requestData = {
-        token: localStorage.getItem("token")
-      }
+        token: localStorage.getItem("token"),
+      };
       try {
         const response = await fetch("http://localhost:9996/web/current", {
-          method : "POST",
+          method: "POST",
           headers: {
-          'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(requestData),
-          });
+        });
 
         const data = await response.json();
-        console.log(`결과: ${JSON.stringify(data)}`)
+        console.log(`결과: ${JSON.stringify(data)}`);
         setFormData(data);
       } catch (error) {
         console.error("사용자 정보를 가져오는 중 오류 발생:", error);
@@ -316,25 +327,24 @@ const EditProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (formData.password !== formData.confirmPassword) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
-  
+
     const updatedUser = {
       userId: formData.userId,
       password: formData.password ? formData.password : null,
       email: formData.email,
-      mbti: formData.mbti,
       interest: formData.interest,
     };
 
     try {
       const response = await fetch("http://localhost:9996/web/update", {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(updatedUser),
       });
@@ -350,39 +360,36 @@ const EditProfile = () => {
       alert(error.message);
     }
   };
-  
-  
-// 회원 탈퇴 userDelete
-const userDelete = async () => {
-  let requestData = {
-    token: localStorage.getItem("token")
-  }
 
-  if (window.confirm("정말로 회원 탈퇴를 하시겠습니까?")) {
-    try {
-      const response = await fetch(`http://localhost:9996/web/delete`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData)
-      });
+  // 회원 탈퇴 userDelete
+  const userDelete = async () => {
+    let requestData = {
+      token: localStorage.getItem("token"),
+    };
 
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(errorMessage);
+    if (window.confirm("정말로 회원 탈퇴를 하시겠습니까?")) {
+      try {
+        const response = await fetch(`http://localhost:9996/web/delete`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        });
+
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          throw new Error(errorMessage);
+        }
+
+        alert("회원 탈퇴가 완료되었습니다.");
+        // 리다이렉트 처리
+      } catch (error) {
+        console.error("회원 탈퇴 중 오류 발생:", error);
+        alert(error.message);
       }
-
-      alert("회원 탈퇴가 완료되었습니다.");
-      // 리다이렉트 처리
-    } catch (error) {
-      console.error("회원 탈퇴 중 오류 발생:", error);
-      alert(error.message);
     }
-  }
-}
-
-  
+  };
 
   return (
     <MyPageContainer>
