@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +36,7 @@ public class PostController {
 	/**
 	 * 게시글 작성
 	 */
-	@GetMapping("write")
+	@PostMapping("write")
 	public ResponseEntity<Map<String, String>> writePost(
 				@RequestBody Map<String, Object> requestData
 			) {
@@ -45,6 +47,7 @@ public class PostController {
 		String token = (String) requestData.get("token");
 		String username = jwtUtil.extractUsername(token);
 		
+		// log.debug("\n넘어온 데이터: {}\n유저이름: {}", postDTO, username);
 		postService.writePost(postDTO, username);
 		
 		response.put("message", "post 등록이 성공적으로 제출되었습니다.");
@@ -103,19 +106,39 @@ public class PostController {
 	}
 	
 	/**
+	 * 게시글 조회 (1개)
+	 */
+	@GetMapping("getPost/{postId}")
+	public ResponseEntity<Map<String, Object>> getPost(
+				@PathVariable("postId") int postId
+			) {
+		Map<String, Object> response = new HashMap<>();
+		
+		PostDTO post = postService.getPost(postId);
+		
+		log.debug("asdfasdfasdf: {}", post);
+
+		
+		response.put("posts", post);
+		return ResponseEntity.ok(response);
+	}
+	
+	/**
 	 * 게시글 전체 조회
 	 */
 	@GetMapping("selectAll")
-	public ResponseEntity<Map<String, String>> sectPostAll() {
-		Map<String, String> response = new HashMap<>();
+	public ResponseEntity<Map<String, Object>> sectPostAll() {
+		Map<String, Object> response = new HashMap<>();
 		
 		List<PostDTO> postList = postService.selectAll();
-		try {
-			String jsonPostList = objectMapper.writeValueAsString(postList);
-			response.put("posts", jsonPostList);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace(); // 예외 처리
-		}
+		response.put("posts", postList);
+		
+//		try {
+//			String jsonPostList = objectMapper.writeValueAsString(postList);
+//			response.put("posts", jsonPostList);
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace(); // 예외 처리
+//		}
 		return ResponseEntity.ok(response);
 	}
 
