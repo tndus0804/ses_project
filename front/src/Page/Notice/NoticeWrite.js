@@ -121,6 +121,7 @@ const NoticeWrite = ({ isAdmin }) => {
       }
       const result = await response.text(); // 텍스트 형식으로 응답 받기
       console.log(result);
+      navigate("/NoticeList");
       // setData(result);
     } catch (err) {
         // setError(err);
@@ -157,5 +158,3 @@ const NoticeWrite = ({ isAdmin }) => {
 };
 
 export default NoticeWrite;
-
-

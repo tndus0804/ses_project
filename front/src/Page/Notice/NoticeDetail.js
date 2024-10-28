@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from 'axios';
-import API_URL from './config';
+import API_URL from './Config';
 
 // 전체 컨테이너 스타일
 const Container = styled.div`
@@ -65,11 +65,13 @@ const NoticeDetail = () => {
     useEffect(() => {
     const fetchNoticeDetail = async () => {
         try {
-            const response = await axios.get(`${API_URL}/notices/${id}`);
+            const response = await axios.get(`${API_URL}/notice/${id}`);
+            console.log(response.status); 
+            console.log(response.data);
             setNotice(response.data);
         } catch (error) {
             console.error("Error fetching notice:", error);
-            navigate("/NoticeList"); // 에러 발생 시 공지 목록 페이지로 이동
+            // navigate("/NoticeList"); // 에러 발생 시 공지 목록 페이지로 이동
         } finally {
             setLoading(false);
         }

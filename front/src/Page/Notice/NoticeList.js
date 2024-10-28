@@ -150,22 +150,48 @@ const NoticeList = () => {
     setFilteredNotices(results);
   };
 
-  const handleDelete = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:9996/web/api/Notices/${id}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete notice');
-      }
-      const updatedNotices = notices.filter(notice => notice.id !== id);
-      setNotices(updatedNotices);
-      setFilteredNotices(updatedNotices);
-    } catch (error) {
-      console.error('Error deleting notice:', error);
-    }
-  };
+  // const handleDelete = async (id) => {
+  //   try {
+  //     const response = await fetch('http://localhost:9996/web/api/Notices/delete', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ id }), // ID를 JSON 형식으로 전송
+  //     });
+  //     if (response.ok) {
+  //       // 성공적으로 삭제된 경우, 로컬 상태에서 해당 공지사항 제거
+  //       setNotices(notices.filter(notice => notice.noticeId !== id));
+  //     } else {
+  //       console.error('Failed to delete notice');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error deleting notice:', error);
+  //   }
+  // };
 
+  const handleDelete = async (noticeId) => {
+    try {
+        const response = await fetch(`http://localhost:9996/web/api/NoticeDelete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: noticeId }), 
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to delete notice');
+        }
+
+        setFilteredNotices(filteredNotices.filter(notice => notice.noticeId !== noticeId));
+        setNotices(notices.filter(notice => notice.noticeId !== noticeId)); // 전체 상태 업데이트 추가
+    } catch (error) {
+        console.error('Failed to delete notice:', error);
+    }
+};
+
+  
   return (
     <Container>
       {/* 헤더 컨테이너 */}
@@ -196,14 +222,18 @@ const NoticeList = () => {
         </thead>
         <tbody>
           {filteredNotices.map(notice => (
-            <TableRow key={notice.id}>
+            <TableRow key={notice.noticeId}>
               <TableData>{notice.noticeId}</TableData>
-              <TableData>{notice.title}</TableData>
+              <TableData>
+                  <Link to={`/notice/${notice.noticeId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      {notice.title}
+                  </Link>
+              </TableData>
               <TableData>{notice.author || "관리자"}</TableData>
               <TableData>{notice.date}</TableData>
               <TableData>{notice.views || 0}</TableData>
               <TableData>
-                <Button onClick={() => handleDelete(notice.id)}>삭제</Button>
+                <Button onClick={() => handleDelete(notice.noticeId)}>삭제</Button>
               </TableData>
             </TableRow>
           ))}
