@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import styled from "styled-components";
+import { useParams } from 'react-router-dom';
 
 const SurveyDetailDiv = styled.div`
 	text-align: center;
@@ -36,12 +37,21 @@ const ReplyBtn = styled.input`
 	}
 `;
 
+const DeleteP = styled.p`
+	width: 70%;
+	margin: 0 auto;
+	text-align: right;
+`;
+
 const SurveyDetail = () => {
 	const [surveyInfo, setSurveyInfo] = useState({});
 
-	const fetchData = () => {
+	const { postId } = useParams(); // URL에서 :id 파라미터 추출
+
+	const fetchData = async () => {
 		// 게시글 정보 가져오기
 
+		
 		// 임시 데이터
 		const tempSurveyInfo  = {
 			title: "설문조사하세요",
@@ -52,15 +62,40 @@ const SurveyDetail = () => {
 			설문조사내용설문조사내용설문조사내용설문조사내용설문조사내용`
 		}
 
-		setSurveyInfo(tempSurveyInfo);
+		try {
+			const reponse = await fetch(`http://localhost:9996/web/api/post/getPost/${postId}`);
+		
+			if (reponse.ok) {
+				const result = await reponse.json();
+
+				console.log(result.posts);
+				
+				let _data = {
+					title: result.posts.title,
+					content: result.posts.content,
+					surveyUrl: result.posts.surveyId
+				}
+
+				setSurveyInfo(_data);
+			}
+		} catch (error) {
+			console.error(error);
+		}
+
+
 	};
 
 	useEffect(() => {
 		fetchData();
 	}, []);
+	
+	const deletePostBtn = () => {
+
+	}
 
 	return (
 		<SurveyDetailDiv className=".surveyDetail">
+			{/* <DeleteP><button type="button" onClick={() => deletePostBtn()}>삭제</button></DeleteP> */}
 			<Table style={{borderSpacing: "0px"}}>
 				<thead>
 					<tr>
@@ -84,7 +119,8 @@ const SurveyDetail = () => {
 				</tbody>
 			</Table>
 
-			<a href="#">폼 이동</a>
+			{/* <a href="" onClick={() => window.location.href = `/surveyParticipation/${surveyInfo.surveyUrl}`}>폼 이동</a> */}
+			<a href="#" onClick={(e) => {e.preventDefault(); window.location.href = `/surveyParticipation/${surveyInfo.surveyUrl}`} }>폼 이동</a>
 
 
 			<Table style={{borderSpacing: "0px"}}>
