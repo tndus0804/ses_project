@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PostPreview from "./../components/SurveyPreview";
 
@@ -11,118 +11,98 @@ const ContainerDiv = styled.div`
 
 `;
 
-const PostImg = styled.img`
-	width: 25%;
-`;
-
-const PopularDiv = styled.div`
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-`;
-const PopularCellDiv = styled.div`
-	width: 25%;
-	margin-bottom: 20px;
-	margin: 0 10px;
-`;
-const PopularCellImg = styled.img`
-	// width: "100%"
-	width: 100px;
-	height: 100%;
-	object-fit: cover;
-`;
-
-const SearchDiv = styled.div`
-	background-color: #FFD7AF;
-	width: 90%;
-	margin: 0 auto;
-	border-radius: 10px;
+const Table = styled.table`
 	text-align: center;
-	padding-bottom: 1px;
-`;
-
-const SearchTable = styled.table`
-	text-align: left;
-	margin: 0 auto; 
-	margin-bottom: 5px;
-	background-color: white;
-	border-radius: 10px;
-	width: 98%;
-`;
-
-const PostViewList = styled.div`
 	margin: 0 auto;
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	grid-template-rows: repeat(3, 1fr);
-	width: 90%;
-	gap: 10px;
+`;
+
+const PostTHead = styled.thead`
 
 `;
 
-const PostViewItem = styled(PostPreview)`
-	border: 1px solid red;
-	display: block;
-	width: 100%;
+const PostTBody = styled.tbody`
+	background-color: #FFF4E9;
 `;
 
-const PopularPreview = styled(PostPreview)`
-	display: block;
-	height: 100%;
+const Tr = styled.tr`
+	height: 50px;
+	&:hover {
+		cursor: pointer
+	}
 `;
 
+const Td = styled.td`
+	min-width: 150px;
+`;
 
 const SurveyPostList = () => {
-	
+	// state
+	const [postList, setPostList] = useState([]);
+
+	let tempData= {
+		postId: "", // 포스트 넘버
+		userNum: "", // 유저 넘버
+		title: "", // 제목
+		content: "", // 내용
+		category: "", // 카테고리
+		views: "", // 조회수
+		imagePath: "",
+		visibility: "",
+		privatePassword: "",
+		createdAt: "",
+		updatedAt: "",
+		status: ""
+	}
+
+	useEffect(() => {
+		getPost();
+	}, [])
+
+	const getPost = async () => {
+		try {
+			const response = await fetch("http://localhost:9996/web/api/post/selectAll")
+		
+			if (response.ok) {
+				const result = await response.json(); // 응답 본문을 JSON으로 파싱
+				console.log(result.posts)
+				setPostList(result.posts)
+			}
+		} catch (error) {
+			console.error("응답 실패", error);
+		}
+	}
+
+	const participateSurvey = (postId) => {
+		// console.log(postId);
+		// return;
+		window.location.href = `/surveyDetail/${postId}` // http://localhost:3000/df00
+	}
 
 	return (
 		<ContainerDiv>
-			<p>인기순위</p>
-			<PopularDiv>
-				{popularImgs.map((img, idx) => (
-					<PopularCellDiv key={idx} className="popularCellDiv">
-						<PopularPreview src={img} title="[수원시] 마을만들기 기본계획 수립" replyCount="26" writer="수원시" created="2021.07.21." viewCount="112" />
-					</PopularCellDiv>
-				))}
-			</PopularDiv>
-			<SearchDiv>
-				<input type="text" /><input type="button" value="검색" />
-				<SearchTable>
-					<tbody>
-						<tr>
-							<th>성별</th>
-							<td>
-								<input type="checkbox" /> 남성 <input type="checkbox" /> 여성 <input type="checkbox" /> 기타
-							</td>
-						</tr>
-						<tr>
-							<th>연령대</th>
-							<td>
-								<input type="checkbox" /> 10대 <input type="checkbox" /> 20대 <input type="checkbox" /> 30대 <input type="checkbox" /> 40대 <input type="checkbox" /> 50대 <input type="checkbox" /> 60대 <input type="checkbox" /> 70대 <input type="checkbox" /> 80대 
-							</td>
-						</tr>
-						<tr>
-							<th>직업</th>
-							<td>
-								<input type="checkbox" /> 학생 <input type="checkbox" /> 대학생 <input type="checkbox" /> 취업준비생 <input type="checkbox" /> 공무원 
-							</td>
-						</tr>
-						<tr>
-							<th>이상형</th>
-							<td>
-								<input type="checkbox" /> 
-							</td>
-						</tr>
-					</tbody>
-				</SearchTable>
-			</SearchDiv>
-
-			<hr />
-			<PostViewList>
-				<PostViewItem src="https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg" title="[수원시] 마을만들기 기본계획 수립" replyCount="26" writer="수원시" created="2021.07.21." viewCount="112" />
-				<PostViewItem src="https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg" title="[수원시] 마을만들기 기본계획 수립" replyCount="26" writer="수원시" created="2021.07.21." viewCount="112" />
-			</PostViewList>
+			<Table>
+				<thead>
+					<tr>
+						<Td>번호</Td>
+						<Td>제목</Td>
+						<Td>작성자</Td>
+						<Td>작성일</Td>
+					</tr>
+				</thead>
+				<PostTBody>
+					{postList.map((post, index) => (
+						<Tr key={index} onClick={() => participateSurvey(post.postId)}>
+							<Td>{index + 1}</Td>
+							<Td>{post.title}</Td>
+							<Td>{post.userName}</Td>
+							<Td>{post.createdAt.split("T")[0]}</Td>
+						</Tr>
+						))
+					}
+				</PostTBody>
+			</Table>
+			
+			
 		</ContainerDiv>
 	);
 };
