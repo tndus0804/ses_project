@@ -31,7 +31,7 @@ public class SurveyQuestionEntity {
     // 설문조사와의 연관관계 (ManyToOne, 지연 로딩)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "survey_id", nullable = false)
-    private SurveyEntity surveys; // 설문조사와 연관된 SurveysEntity
+    private SurveyEntity survey; // 설문조사와 연관된 SurveysEntity
 
     // 질문 텍스트 (TEXT, NOT NULL)
     @Column(name = "question_text", nullable = false, columnDefinition = "TEXT")
@@ -43,6 +43,6 @@ public class SurveyQuestionEntity {
 
     // 옵션 (JSON 형식으로 저장)
     @Column(name = "options", columnDefinition = "JSON")
-    private String options; // 선택지 또는 추가 옵션
+    private Object options; // 선택지 또는 추가 옵션
 
 }
