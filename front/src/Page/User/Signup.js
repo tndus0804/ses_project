@@ -212,18 +212,7 @@ const Signup = () => {
 
       if (response.ok) {
         console.log("회원가입 성공");
-        setForm({
-          userId: "",
-          password: "",
-          confirmPassword: "",
-          name: "",
-          birthday: "",
-          gender: "",
-          phoneNumber: "",
-          email: "",
-          emailDomain: "",
-          verificationCode: "", // 폼 초기화
-        });
+        window.location.href="/"
       } else {
         console.error("회원가입 실패");
       }
