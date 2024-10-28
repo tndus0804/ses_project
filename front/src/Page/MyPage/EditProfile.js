@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import MyPageContainer from "./Components/MyPageContainer";
 import styled from "styled-components";
+
 
 // 제목(fix)
 const Title = styled.h2`
   border-bottom: 1px solid #f5a623;
-  width: 1100px;
+  width: 800px;
   padding-bottom: 15px;
   display: inline-block;
+  text-align: center;
 `;
 
 const FormContainer = styled.form`
@@ -15,7 +18,8 @@ const FormContainer = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 1100px;
+  width: 100%;
+  max-width: 1100px;
 `;
 
 // 레이블과 입력 필드를 나란히 배치할 컨테이너
@@ -47,17 +51,18 @@ const Input = styled.input`
   font-size: 16px;
   background-color: #fff4e9;
 `;
-const AddressInput = styled.input`
-  flex-grow: 1;
-  width: 48%;
-  background-color: #fff4e9;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  font-size: 16px;
-  margin-right: 10px; // 버튼과의 간격을 조정
-  cursor: not-allowed; // 커서 금지
-`;
+// 주소
+// const AddressInput = styled.input`
+//   flex-grow: 1;
+//   width: 48%;
+//   background-color: #fff4e9;
+//   padding: 10px;
+//   border: 1px solid #ddd;
+//   border-radius: 20px;
+//   font-size: 16px;
+//   margin-right: 10px; // 버튼과의 간격을 조정
+//   cursor: not-allowed; // 커서 금지
+// `;
 const DisabledInput = styled.input`
   width: 65%; // 레이블과 균형 맞추기
   padding: 10px;
@@ -175,7 +180,7 @@ const WithdrawButton = styled(Button)`
     background-color: #e43a3a;
   }
 `;
-const DashBoard = ({ formData, handleChange, handleSubmit, userDelete }) => {
+const DashBoard = ({ formData, handleChange, handleSubmit, userDelete, handleEmailVerification, handleCodeVerification, handleReset }) => {
   return (
     <>
       <Title>회원정보 수정</Title>
@@ -254,7 +259,6 @@ const DashBoard = ({ formData, handleChange, handleSubmit, userDelete }) => {
             onChange={handleChange}
             disabled
           />
-          <AuthButton>본인인증</AuthButton>
         </RowContainer>
 
         {/* 이메일 */}
@@ -267,12 +271,30 @@ const DashBoard = ({ formData, handleChange, handleSubmit, userDelete }) => {
             value={formData.email}
             onChange={handleChange}
           />
+        <AuthButton type="button" onClick={handleEmailVerification}>
+          본인인증
+        </AuthButton>
+        </RowContainer>
+
+        {/* 인증 코드 입력 부분 */}
+        <RowContainer>
+          <Label>인증 코드</Label>
+          <Input
+            type="text"
+            name="verificationCode"
+            placeholder="인증 코드 입력"
+            value={formData.verificationCode}
+            onChange={handleChange}
+          />
+          <AuthButton type="button" onClick={handleCodeVerification}>
+            확인
+          </AuthButton>
         </RowContainer>
 
         {/* 버튼 */}
         <ButtonContainer>
-          <Button type="submit">변경</Button>
-          <Button type="reset">취소</Button>
+          <Button type="submit">수정</Button>
+          <Button type="button" onClick={handleReset}>취소</Button>
         </ButtonContainer>
 
         {/* 회원 탈퇴 버튼 */}
@@ -287,12 +309,28 @@ const DashBoard = ({ formData, handleChange, handleSubmit, userDelete }) => {
 };
 
 const EditProfile = () => {
+
+  const navigate = useNavigate();
+
+  const handleReset = () => {
+    // 취소 버튼 클릭 시 MyPageMain으로 이동
+    navigate("/MyPageMain");
+  };
   const [formData, setFormData] = React.useState({
+    userId: "", 
     password: "",
     confirmPassword: "",
     phone: "",
     email: "",
+    verificationCode: "",
+    // password: "",
+    // confirmPassword: "",
+    // phone: "",
+    // email: "",
+    // verificationCode: "",
   });
+
+  const [isVerified, setIsVerified] = React.useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -325,20 +363,94 @@ const EditProfile = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleEmailVerification = async () => {
+    // 이메일 인증 로직 추가
+    try {
+      const response = await fetch("http://localhost:9996/web/send-verification-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: formData.email }),
+      });
+
+      console.log(response);
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(errorMessage);
+      }
+
+      alert("인증 코드가 이메일로 전송되었습니다.");
+    } catch (error) {
+      console.error("이메일 인증 중 오류 발생:", error);
+      alert(error.message);
+    }
+  };
+
+
+  const handleCodeVerification = async () => {
+    // 인증 코드 검증 로직 추가
+    const updatedUser = {
+      userId: formData.userId,
+      password: formData.password ? formData.password : null,
+      email: formData.email,
+      verificationCode: formData.verificationCode,
+    };
+
+    try {
+      const response = await fetch("http://localhost:9996/web/verify-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedUser),
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(errorMessage);
+      }
+
+      setIsVerified(true);
+      alert("인증이 완료되었습니다.");
+    } catch (error) {
+      console.error("인증 코드 확인 중 오류 발생:", error);
+      alert(error.message);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log("isVerified:", isVerified);
+
+    // console.log("formData:", formData);
+
+    if (!isVerified) {
+      alert("이메일 인증이 완료되지 않았습니다.");
+      return;
+    }
+
+    if (!formData.password) {
+      alert("비밀번호를 입력해야 합니다.");
+      return;
+    }
 
     if (formData.password !== formData.confirmPassword) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
+    
 
     const updatedUser = {
       userId: formData.userId,
       password: formData.password ? formData.password : null,
       email: formData.email,
-      interest: formData.interest,
+      verificationCode: formData.verificationCode,
+      // interest: formData.interest,
     };
+
+    console.log("updatedUser:", updatedUser);
 
     try {
       const response = await fetch("http://localhost:9996/web/update", {
@@ -355,6 +467,7 @@ const EditProfile = () => {
       }
 
       alert("회원정보가 성공적으로 수정되었습니다.");
+      navigate("/MyPageMain"); 
     } catch (error) {
       console.error("회원정보 수정 중 오류 발생:", error);
       alert(error.message);
@@ -383,6 +496,8 @@ const EditProfile = () => {
         }
 
         alert("회원 탈퇴가 완료되었습니다.");
+
+        navigate("/");
         // 리다이렉트 처리
       } catch (error) {
         console.error("회원 탈퇴 중 오류 발생:", error);
@@ -398,6 +513,9 @@ const EditProfile = () => {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         userDelete={userDelete}
+        handleEmailVerification={handleEmailVerification} 
+        handleCodeVerification={handleCodeVerification} 
+        handleReset={handleReset}
       />
     </MyPageContainer>
   );
