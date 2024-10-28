@@ -131,11 +131,15 @@ const Header = () => {
             </li>
             <li>|</li>
             <li>
-              <a href="/survey-create">설문조사 작성</a>
+              <a href="/surveyForm">설문조사 작성</a>
             </li>
             <li>|</li>
             <li>
-              <a href="/survey-board">설문조사 게시판</a>
+              <a href="/surveyPostList">설문조사 게시판</a>
+            </li>
+            <li>|</li>
+            <li>
+              <a href="/surveyPostWrite">게시글 작성</a>
             </li>
           </ul>
         </MainNav>
