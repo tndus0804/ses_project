@@ -3,6 +3,7 @@ package com.sulomon.web.entity;
 import com.sulomon.auth.entity.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -77,6 +78,12 @@ public class PostEntity {
     @Column(name = "status", length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'active'")
     private String status;// 기본값은 'active'
 
+    // 설문조사 ID 참조 surveyId
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "survey_id", nullable = false)
+    private SurveyEntity survey;
+    
+    
     @PrePersist
     public void prePersist() {
 //        if(visibility == null) this.visibility = "visible"; // 공개 상태
