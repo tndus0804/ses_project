@@ -16,7 +16,7 @@ import java.util.UUID;
 public class PostDTO {
 
     private int postId;                // 게시물 ID
-    private UUID userNum;               // 작성자 ID
+    private UUID userNum;              // 작성자 ID
     private String title;              // 게시물 제목
     private String content;            // 게시물 내용
     private String category;           // 카테고리
@@ -27,4 +27,6 @@ public class PostDTO {
     private LocalDateTime createdAt;   // 생성 시간
     private LocalDateTime updatedAt;   // 수정 시간
     private String status;             // 게시물 상태 (ACTIVE, DELETED)
+    private Integer surveyId;		   // 설문조사 ID
+    private String userName;		   // 작성자 이름
 }
