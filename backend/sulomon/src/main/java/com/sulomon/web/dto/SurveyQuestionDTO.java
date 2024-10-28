@@ -15,7 +15,7 @@ public class SurveyQuestionDTO {
     private Integer surveyId;         // 설문조사 ID
     private String questionText;      // 질문 내용
     private String questionType;      // 질문 유형 (MULTIPLE_CHOICE, TEXT, RATING)
-    private String options;           // 선택지 또는 옵션 (JSON)
+    private Object options;           // JSON 데이터를 담을 수 있도록 변경
 
 
 }
