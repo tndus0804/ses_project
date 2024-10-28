@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const SurveyPostWriteDiv = styled.div`
@@ -78,36 +78,97 @@ const H1 = styled.h1`
 `;
 
 const SurveyPostWrite = () => {
+	const [surveyNum, setSurveyNum] = useState("");
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
-	const [selectedTopics, setSelectedTopics] = useState([]);
-	const [paymentPoint, setPaymentPoint] = useState("");
 
-	const topics = [
-		{ category: "엔터테인먼트 · 예술", subtopics: ["문학 · 예술", "영화", "드라마", "미술 · 디자인", "공연 · 전시"] },
-		{ category: "운동 · 액티비티", subtopics: ["러닝 · 산책", "등산", "헬스", "스키", "클라이밍", "자전거", "서핑"] },
-	]
-
-	// 주제 선택했을 때
-	const handleTopicClick = (topic) => {
-		if (selectedTopics.includes(topic)) {
-			setSelectedTopics(selectedTopics.filter((t) => t !== topic));
-		} else {
-			setSelectedTopics([...selectedTopics, topic]);
-		}
+	// 설문조사 연결
+	const connectSurvey = () => {
+		let w = window.open('/SurveyConnect', '설문조사 연결', 'top=200, left=500 width=700, height=500');
 	}
+	
+	
+
+	useEffect(() => {
+		const handleReceiveMessage = (event) => {
+			const {message} = event.data;
+			if (message != undefined) {
+				console.log(message);
+				setSurveyNum(message);
+			}
+		}
+
+		window.addEventListener("message", handleReceiveMessage);
+
+		// 언마운트 시 리스너 제거
+		return () => {
+			window.removeEventListener("message", handleReceiveMessage);
+		}
+	}, [])
 
 	// 폼 제출
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const surveyData = {
-			title,
-			content,
-			selectedTopics,
-			paymentPoint,
+		// 로그인 여부 체크
+		if (localStorage.getItem("token") == null) {
+			alert("로그인 해주세요!");
+			return;
+		}
+		// 제목 입력 여부 체크
+		if (title == "") {
+			alert('제목을 입력해주세요!');
+			return;
+		}
+		// 게시글 선택 여부
+		if (typeof surveyNum != "number") {
+			alert("게시글을 선택해주세요!");
+			return;
+		}
+		// 내용 선택 여부
+		if (content == "") {
+			alert("내용을 입력해주세요!");
+			return;
+		}
+
+		// 내용 입력 여부 체크
+
+		const requestData = {
+			postDTO: {
+				title: title,
+				content: content,
+				surveyId: surveyNum
+			},
+			token: localStorage.getItem("token")
 		};
-		console.log("submitted Survey Data: ", surveyData);
+		console.log("submitted Survey Data: ", requestData);
 		// 서버로 데이터 전송 코드
+		try {
+			const response = await fetch("http://localhost:9996/web/api/post/write", {
+				method: "post",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(requestData)
+			})
+
+			// 서버 응답 상태와 본문 확인
+			// console.log(`서버 응답 상태: ${response.status}`);
+
+			// 서버 응답 확인
+			if (response.ok) {
+				const result = response.json();
+				alert("설문조사가 성공적으로 제출되었습니다!");
+
+				window.location.href="/";
+
+			} else {
+				const errorMessage = await response.text();
+				alert(`게시글 제출 실패: ${errorMessage}`);
+			}
+				
+		} catch(error) {
+			console.error(error);
+		}
 	}
 	return (
 		<SurveyPostWriteDiv>
@@ -121,35 +182,13 @@ const SurveyPostWrite = () => {
 						placeholder='제목을 입력하세요'/>
 				</FormGroupDiv>
 				<FormGroupDiv className="formGroup">
+					<button type="button" onClick={connectSurvey}>설문조사 선택</button> : {typeof surveyNum == "number" ? surveyNum : "선택을 해주세요"}
+				</FormGroupDiv>
+				<FormGroupDiv className="formGroup">
 					<Label htmlFor='content'>내용</Label>
 					<SurveyPostWriteTextarea type='text' id='title' value={content}
 						onChange={(e) => setContent(e.target.value)}
 						placeholder='내용을 입력하세요'/>
-				</FormGroupDiv>
-				<FormGroupDiv className="formGroup">
-					<Label>관심 주제 설정</Label>
-					<Topics className="topics">
-						{topics.map((topicCategory) => (
-							<div key={topicCategory.category}>
-								<H4>{topicCategory.category}</H4>
-								<Subtopics className="subtopics">
-									{topicCategory.subtopics.map((subtopic) => (
-										<SubtopicsButton type='button' key={subtopic}
-											className={selectedTopics.includes(subtopic) ? "selected" : ""}
-											onClick={() => handleTopicClick(subtopic)}>
-												{subtopic}
-										</SubtopicsButton>
-									))}
-								</Subtopics>
-							</div>
-						))}
-					</Topics>
-				</FormGroupDiv>
-				<FormGroupDiv className="formGroup">
-					<Label htmlFor='paymentPoint'>지급 포인트</Label>
-					<SurveyPostWriteInput type='text' id='paymentPoint' value={paymentPoint}
-						onChange={(e) => setPaymentPoint(e.target.value)}
-						placeholder='포인트 입력'/>
 				</FormGroupDiv>
 				<SubmitButton type='submit' className="submitButton">
 					작성 버튼
