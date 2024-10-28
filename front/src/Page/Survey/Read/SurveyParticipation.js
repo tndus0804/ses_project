@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import styled from "styled-components";
+import { useParams } from 'react-router-dom';
 
 // 스타일 컴포넌트 정의
 const Container = styled.div`
@@ -80,136 +81,242 @@ const SubmitButton = styled.button`
 
 const SurveyParticipation = () => {
 	// state 
-	const [surveyInfo, setSurveyInfo] = useState([]);
-	const [responses, setResponses] = useState([]);
+	const [surveyInfo, setSurveyInfo] = useState([]); // 질문 데이터를 저장하는 코드
+	const [responses, setResponses] = useState({}); // 질문 응답을 저장하는 코드
+	const [message, setMessage] = useState("");
 
-	const surveyInfo1 = [{
-		id: 1,
-		title: "피크닉 조사",
-		period: {
-			mode: "limit",
-			from: "2024.08.01",
-			to: "2024.09.01"
-		},
-		questions: [
-			{title: "피크닉 장소1", type: "객관식", options: ["박물관", "전시회", "수족관"]},
-			{title: "어느 요일에?", type: "객관식", options: ["월요일", "화요일", "수요일"]},
-			{title: "기타의견", type: "주관식", options: []}
-		]
-	}, {
-		id: 2,
-		title: "고객 만족도 조사",
-		period: {
-			mode: "noLimit",
-			from: "2024.09.01",
-			to: "2024.10.01"
-		},
-		questions: [
-			{title: "피크닉 장소11", type: "객관식", options: ["박물관", "전시회", "수족관"]},
-			{title: "어느 요일에?22", type: "객관식", options: ["월요일", "화요일", "수요일"]},
-			{title: "기타의견33", type: "주관식", options: []}
-		]
-	}]
+	const { surveyId } = useParams(); // URL에서 :id 파라미터 추출
+	// 틀
+	let tempQuestionData = {
+		surveyDTO: {
+			surveyId: "",
+			title: "",
+			startDate: "",
+			endDate: "",
+			point: ""
+		}, 
+		surveyQuestion: [{
+			questionText: "",
+			questionType: "",
+			optionType:""
+		}]
+	}
+	let tempAnswerData = {
+		
+	}
 
 	// 백엔드에서 질문 데이터를 가져오기
 	const fetchSurveyData = async () => {
+		console.log("dd")
 		try {
-			// const response = await fetch("http://~~") // 주소 입력
-			// const data = await response.json();
+			const response = await fetch(`http://localhost:9996/web/api/survey/getSurvey/${surveyId}`);
+			
+			if (!response.ok) {
+				throw new Error("Failed to fetch survey data");
+			}
+			
+			let data = await response.json();
 
-			// 임시 데이터
-			const data = surveyInfo1;
+			console.log("=22===========22==============")
+			console.log(data)
+			console.log("=33===========33==============")
+			
+			const surveyData = {
+				surveyDTO: data.surveyDTO,
+				// surveyQuestion: data.surveyQuestionDTOs
+				// surveyDTO: {
+				// 	surveyId: data.surveyDTO.surveyId,
+				// 	title: data.surveyDTO.title,
+				// 	startDate: data.surveyDTO.startDate,
+				// 	endDate: data.surveyDTO.endData,
+				// 	point: data.surveyDTO.points
+				// }, 
+				surveyQuestion: data.surveyQuestionDTOs.map(question => ({
+					questionId: question.questionId,
+					surveyId: question.surveyId,
+					questionText: question.questionText,
+					questionType: question.questionType,
+					options: JSON.parse(question.options), // 배열로 변환
+				}))
+			}
+			setSurveyInfo(surveyData);
+			console.log(surveyInfo)
+			console.log("=44444444444444==============")
 
-			setSurveyInfo(data);
+			console.log(`타입은: ${typeof surveyData.surveyQuestion[0].options}`);
 
 			// 질문 데이터를 가져온 후, 각 질문에 대한 빈 응답 배열 설정
-			const initialResponses = data.map((survey) => ({
-				id: survey.id,
-				answers: survey.questions.map(() => "")
-			}));
+			const initialResponses = surveyData.surveyQuestion.reduce((acc, question) => {
+				acc[question.questionId] = "";
+				return acc;
+			}, {});
+
 			setResponses(initialResponses);
 		} catch (error) {
 			console.error("Error fetching survey data: ", error)
 		}
 	}
-
+	
 	useEffect(() => {
 		// 컴파운트가 마운트 될 때 데이터를 가져옴
+
+		// 로그인 체크
+		if (localStorage.getItem("token") == null) {
+			setMessage("로그인 해주세요!")
+			return;
+		}
+
 		fetchSurveyData();
+		
 	}, [])
 
+	useEffect(() => {
+		if (message !== null && message !== undefined && message !== "") {
+			alert(message);
+			setMessage("");
+		} 
+		
+		// if (message) {
+		// 	alert(message);
+		// 	setMessage("");
+		// }
+			
+	}, [message])
+
+
 	// 응답 체크했을 때
-	const handleInputChange = (surveyId, questionIndex, value) => {
-		setResponses((prevResponses) => 
-			prevResponses.map((response) =>
-				response.id == surveyId
-					? {...response, answers: response.answers.map((answer, idx) => idx === questionIndex ? value : answer)}
-					: response
-			)
+	const handleInputChange = (questionId, value) => {
+		// console.log(questionId, value)
+		setResponses((prevResponses) => ({
+			...prevResponses, 
+			[questionId]: value 
+			})
 		);
 	};
 
 	// 설문 제출 버튼 눌렀을 때
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log("Form Submitted", responses);
+		let isEmpty = false;
+
+		if (localStorage.getItem("token") == null) {
+			alert("로그인 해주세요!");
+			return;
+		}
+		
+		// 빈값 체크하기
+		// responses.map((response) => { // 배열 일때, 
+		// 	Object.entries(response).forEach(([key, value]) => {
+		// 		if (value === "") {
+		// 			isEmpty = true;
+		// 		}
+		// 	} );
+		// })
+
+		// 빈값 체크하기 => 객체일 때
+		if (typeof responses == "object") {
+			Object.entries(responses).forEach(([key, value]) => {
+				if (value === "") {
+					isEmpty = true;
+				}
+			})
+		}
+
+		if (isEmpty) {
+			alert("작성이 완료되지 않은 항목이 있어요!");
+			return;
+		}
+		
 		// 백엔드로 제출
+		let requestData = {
+			token: localStorage.getItem("token"),
+			responseDTO : {
+				surveyId: surveyInfo.surveyDTO.surveyId,
+				responses: JSON.stringify(responses)
+			}
+		}
+		console.log("Form Submitted", JSON.stringify(requestData, null, 1) );
+		try {
+			const requestResponse = await fetch("http://localhost:9996/web/api/survey/responseSurveyQuestion", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(requestData)
+			})
+
+			if (requestResponse.ok) {
+				const result = await requestResponse.text();
+				alert("응답이 완료 되었습니다.", result);
+				window.location.href = "/"
+
+			} else {
+				const errorMessage = await requestResponse.text();
+				console.error("응답 실패", errorMessage);
+			}
+		} catch (error) {
+			console.error("서버 오류 발생", error);
+		}
+
 	}
 
 	return (
 		<Container className='surveyParticipation'>
-			<Title>SurveyParticipation</Title>
+			{/* <Title>SurveyParticipation</Title> */}
+			{/* <button onClick={()=>console.log(responses)}>로그</button> */}
 			<form onSubmit={handleSubmit}>
-				{surveyInfo.map(survey => (
-					<Fragment key={survey.id}>
-						<Table  style={{border:"1px solid black", width: "80%", marginBottom: "20px"}}>
-							<tbody>
-								<tr>
-									<TableCell>설문조사: {survey.title}</TableCell>
-								</tr>
-								<tr>
-									<TableCell>설문기간: {survey.period.mode == `limit`
-											? `${survey.period.from} ~ ${survey.period.to}`: "기한 없음" }
-									</TableCell>
-								</tr>
-								{/* 설문 내용 */}
-								{survey.questions.map((question, index) => (
-									<tr key={index}>
-										<TableCell>
-											<Label>{index + 1}. {question.title}</Label>
-											<br />
-											{/* 객관식 */}
-											{question.type === "객관식" && (
-												<div>
-													{question.options.map((option, idx) => (
-														<Label key={idx} style={{ marginRight: "10px" }}>
-															<RadioInput type='radio'
-																	name={`${survey.id}-${index}`}
-																	value={option} 
-																	onChange={() => handleInputChange(survey.id, index, option)}
-																	checked={responses.find((response) => response.id === survey.id)?.answers[index] === option}
+				{ surveyInfo.surveyDTO && (
+					<Table style={{border: "1px solid black", width: "80%", marginBottom: "20px"}}>
+						<thead>
+							<tr>
+								<TableCell>설문조사: {surveyInfo.surveyDTO.title}</TableCell>
+							</tr>
+							<tr>
+								<TableCell>설문기간: {surveyInfo.surveyDTO.startDate == null ? "제한 없음" : ""}
+								</TableCell>
+							</tr>
+						</thead>
+						{/* 설문내용 */}
+						<tbody>
+							{surveyInfo.surveyQuestion && surveyInfo.surveyQuestion.map((question, index) => (
+								<tr key={index}>
+									<TableCell>
+										<Label>{index + 1}. {question.questionText}</Label>
+										<br />
+										{/* 객관식 */}
+										{question.questionType === "객관식" && (
+											<div>
+												{Array.isArray(question.options) && question.options.length > 0 ? (
+													question.options.map((option, idx) => (
+														<Label key={idx} style={{marginRight: "10px"}}>
+															<RadioInput type="radio"
+																	value={option}
+																	name={`option-${index}`}
+																	onChange={(e) => handleInputChange(question.questionId, e.target.value)}
+																	
 																	/>
 																{option}
 														</Label>
-													))}
-												</div>
-											)}
-											{/* 주관식 */}
-											{question.type === "주관식" && (
-												<div>
-													<Textarea placeholder='의견을 입력하세요'
-																value={responses.find((response) => response.id === survey.id)?.answers[index] || ""}
-																onChange={(e) => handleInputChange(survey.id, index, e.target.value)}
-																/>
-												</div>
-											)}
-										</TableCell>
-									</tr>
-								))}
-							</tbody>
-						</Table>
-					</Fragment>
-				))}
+													))
+												) : (
+													<div>선택 가능한 옵션이 없습니다.</div>
+												)}
+													
+											</div>
+										)}
+										{/* 주관식 */}
+										{question.questionType === "주관식" && (
+											<div>
+												<Textarea placeholder="입력해주세요" onChange={(e) => handleInputChange(question.questionId, e.target.value)}
+															/>
+											</div>
+										)}
+									</TableCell>
+								</tr>
+							))}
+						</tbody>
+					</Table>
+				)}
 				<SubmitButton type="submit" style={{ padding: "10px 20px", backgroundColor: "#FF6C0A", color: "white", border: "none", borderRadius: "5px" }}>
 					제출
 				</SubmitButton>
