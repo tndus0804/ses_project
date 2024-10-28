@@ -25,6 +25,7 @@ import SurveySelect from "./Page/Survey/Write/SurveySelect";
 import SurveyPostWrite from "./Page/Survey/Write/SurveyPostWrite";
 import SurveyParticipation from "./Page/Survey/Read/SurveyParticipation";
 import SurveyPostList from "./Page/Survey/Read/SurveyPostList";
+import SurveyConnect from "./Page/Survey/components/SurveyConnect";
 
 // import AdminSidebar from './Page/Admin/Components/AdminSidebar';
 import AdminUser from "./Page/Admin/AdminUser";
@@ -66,12 +67,13 @@ const App = () => {
           <Route path="/surveyPostList" element={<SurveyPostList />} />
           <Route path="/surveyForm" element={<SurveyForm />} />
           <Route path="/surveyDetail" element={<SurveyDetail />} />
+          <Route path="/surveyDetail/:postId" element={<SurveyDetail />} />
           <Route path="/surveySelect" element={<SurveySelect />} />
           <Route path="/surveyPostWrite" element={<SurveyPostWrite />} />
-          <Route
-            path="/surveyParticipation"
-            element={<SurveyParticipation />}
-          />
+          <Route path="/surveyParticipation" element={<SurveyParticipation />} />
+          <Route path="/surveyParticipation/:surveyId" element={<SurveyParticipation />} />
+          <Route path="/SurveyConnect" element={<SurveyConnect />} />
+          
           {/* 관리자 */}
           <Route path="/adminUser" element={<AdminUser />} />
           <Route path="/adminSurvey" element={<AdminSurvey />} />
