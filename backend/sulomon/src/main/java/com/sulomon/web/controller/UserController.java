@@ -100,25 +100,58 @@ public class UserController {
             return ResponseEntity.status(400).body("이메일 인증 실패");
         }
     }
-    
+   
     @PostMapping("/update")
-    public ResponseEntity<?> updateUser(@RequestBody UserDTO updatedUser) {
-        log.info("회원정보 수정 요청 데이터: {}", updatedUser);
+    public ResponseEntity<?> updateUser(@RequestBody Map<String, Object> updateData) {
+        log.info("회원정보 수정 요청 데이터: {}", updateData);
+       
         try {
-            us.updateUser(updatedUser); 
+            String email = (String) updateData.get("email");
+            String inputCode = (String) updateData.get("verificationCode");
+
+            // 이메일과 인증 코드가 없으면 오류 반환
+            if (email == null || inputCode == null) {
+                log.error("이메일 또는 인증 코드가 누락되었습니다.");
+                return ResponseEntity.status(400).body("이메일 또는 인증 코드가 누락되었습니다.");
+            }
+
+            // 이메일 인증 코드 확인
+            boolean isVerified = us.verifyEmailCode(email, inputCode);
+            if (!isVerified) {
+                log.error("이메일 인증 코드가 일치하지 않습니다.");
+                return ResponseEntity.status(400).body("이메일 인증 코드가 일치하지 않습니다.");
+            }
+
+            // 인증이 성공하면 회원정보 수정 진행
+            UserDTO updatedUser = objectMapper.convertValue(updateData, UserDTO.class);
+            us.updateUser(updatedUser);
             return ResponseEntity.ok("회원정보 수정 성공");
+
         } catch (Exception e) {
             log.error("회원정보 수정 실패", e);
-            return ResponseEntity.status(400).body("회원정보 수정 실패");
+            return ResponseEntity.status(500).body("회원정보 수정 중 오류가 발생했습니다.");
         }
     }
-    
-    @PostMapping("/delete") 
+
+   
+//    @PostMapping("/update")
+//    public ResponseEntity<?> updateUser(@RequestBody UserDTO updatedUser) {
+//        log.info("회원정보 수정 요청 데이터: {}", updatedUser);
+//        try {
+//            us.updateUser(updatedUser);
+//            return ResponseEntity.ok("회원정보 수정 성공");
+//        } catch (Exception e) {
+//            log.error("회원정보 수정 실패", e);
+//            return ResponseEntity.status(400).body("회원정보 수정 실패");
+//        }
+//    }
+   
+    @PostMapping("/delete")
     public ResponseEntity<?> deleteUser(@RequestBody Map <String, Object> requestData) {
-    	// token
-    	String token = (String) requestData.get("token");
-    	String username = jwtUtil.extractUsername(token);    	
-    	
+    // token
+    String token = (String) requestData.get("token");
+    String username = jwtUtil.extractUsername(token);    
+   
         log.info("회원탈퇴 요청: {}", username);
         try {
             us.deleteUser(username); // 서비스로 넘김
@@ -131,11 +164,11 @@ public class UserController {
     
     @PostMapping("/current")
     public ResponseEntity<UserDTO> getCurrentUser(@RequestBody Map<String, Object> requestData) {
-    	// token
-    	String token = (String) requestData.get("token");
-    	String username = jwtUtil.extractUsername(token);
-    	
-    	log.debug(username);
+    // token
+    String token = (String) requestData.get("token");
+    String username = jwtUtil.extractUsername(token);
+   
+    log.debug(username);
         UserDTO user = us.getCurrentUser(username);
         return ResponseEntity.ok(user);
     }

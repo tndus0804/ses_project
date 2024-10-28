@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
         ur.save(userEntity);
         log.info("회원가입 성공 아이디: {}", userDTO.getUserId());
     }
-    
-    
+   
+   
     @Override
     public void updateUser(UserDTO updatedUser) {
         verificationCodes.remove(updatedUser.getEmail());
@@ -58,8 +58,8 @@ public class UserServiceImpl implements UserService {
             existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword())); // 비밀번호 암호화
         }
         existingUser.setEmail(updatedUser.getEmail());
-//        existingUser.setInterests(updatedUser.getInterests());       
-        
+//        existingUser.setInterests(updatedUser.getInterests());      
+       
         ur.save(existingUser);
     }
 
@@ -70,20 +70,20 @@ public class UserServiceImpl implements UserService {
         ur.delete(existingUser);
     }
 
-    
+   
     @Override
     public UserDTO getCurrentUser(String username) {
     	UserEntity userEntity = ur.findByUserId(username).orElse(null);
-    	
+   
     	// lombok의 builder 방식을 이용한 UserDTO 객체 생성
     	UserDTO userDTO = UserDTO.builder()
-    			.userId(username)
-    			.email(userEntity.getEmail())
-    			.name(userEntity.getName())
-    			.birthday(userEntity.getBirthday())
-    			.gender(userEntity.getGender())
-    			.phoneNumber(userEntity.getPhoneNumber())
-				.build();
+			.userId(username)
+			.email(userEntity.getEmail())
+			.name(userEntity.getName())
+			.birthday(userEntity.getBirthday())
+			.gender(userEntity.getGender())
+			.phoneNumber(userEntity.getPhoneNumber())
+			.build();
         return userDTO;
     }
 
